@@ -181,6 +181,39 @@ curl -s http://localhost:3000/api/ml/training-data?limit=1000 > experiment_resul
 echo -e "${GREEN}✓ Additional data exported to experiment_results/${NC}"
 echo ""
 
+# Step 7: Generate charts
+echo -e "${BLUE}Step 7: Generating charts from experiment results...${NC}"
+echo ""
+
+# Check if Python virtual environment exists, create if not
+if [ ! -d "/tmp/venv" ]; then
+    echo "  ⏳ Creating Python virtual environment..."
+    python3 -m venv /tmp/venv
+fi
+
+# Activate venv and install dependencies
+source /tmp/venv/bin/activate
+
+# Check if matplotlib is installed
+if ! python3 -c "import matplotlib" 2>/dev/null; then
+    echo "  ⏳ Installing chart dependencies..."
+    pip install matplotlib numpy --quiet
+fi
+
+# Generate charts
+echo "  📊 Generating better charts..."
+python3 generate_better_charts.py
+
+echo "  📊 Generating thesis charts..."
+python3 generate_thesis_charts.py
+
+deactivate
+
+echo ""
+echo -e "${GREEN}✓ Charts generated successfully${NC}"
+echo "  📁 Charts saved in: ./charts/"
+echo ""
+
 echo -e "${YELLOW}═══════════════════════════════════════════════════════════════════════════════════════${NC}"
 echo ""
 echo -e "${GREEN}✅ All experiments completed successfully!${NC}"

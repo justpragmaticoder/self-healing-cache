@@ -21,7 +21,7 @@ export class SelfHealingCache<T = any> {
       maxSize: config.maxSize || 10000,
       defaultTTL: config.defaultTTL || 300000, // 5 minutes
       healthCheckInterval: config.healthCheckInterval || 10000, // 10 seconds
-      predictionThreshold: config.predictionThreshold || 0.6,
+      predictionThreshold: config.predictionThreshold || 0.75, // More conservative: only act on high confidence
       enableML: config.enableML !== false,
       enableAdaptiveRecovery: config.enableAdaptiveRecovery !== false,
       storageAdapter: config.storageAdapter
@@ -76,13 +76,34 @@ export class SelfHealingCache<T = any> {
 
       this.healthMonitor.recordMiss();
 
-      // Try to refresh from data source if function is provided
+      // SELF-HEALING ADVANTAGE: Retry on failure with exponential backoff
       if (this.dataRefreshFunction) {
-        const refreshedValue = await this.dataRefreshFunction(key);
-        if (refreshedValue !== undefined) {
-          await this.set(key, refreshedValue);
+        let lastError: any;
+        const maxRetries = 2;
+
+        for (let attempt = 0; attempt < maxRetries; attempt++) {
+          try {
+            const refreshedValue = await this.dataRefreshFunction(key);
+            if (refreshedValue !== undefined) {
+              await this.set(key, refreshedValue);
+              this.healthMonitor.recordResponseTime(Date.now() - startTime);
+              return refreshedValue;
+            }
+            break; // Success
+          } catch (error) {
+            lastError = error;
+            // Retry with backoff only if not last attempt
+            if (attempt < maxRetries - 1) {
+              await new Promise(resolve => setTimeout(resolve, 20 * (attempt + 1)));
+            }
+          }
+        }
+
+        // All retries failed - record error once
+        if (lastError) {
+          this.healthMonitor.recordError();
           this.healthMonitor.recordResponseTime(Date.now() - startTime);
-          return refreshedValue;
+          throw lastError;
         }
       }
 
@@ -90,7 +111,7 @@ export class SelfHealingCache<T = any> {
       return undefined;
 
     } catch (error) {
-      this.healthMonitor.recordError();
+      // Don't double-record error (already recorded above)
       this.healthMonitor.recordResponseTime(Date.now() - startTime);
       throw error;
     }

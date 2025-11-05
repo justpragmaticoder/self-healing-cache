@@ -351,18 +351,20 @@ curl http://localhost:3000/api/ml/training-data?limit=1000 > ml_data.json
 ## Project Structure
 
 ```
-src/examples/nestjs-app/
+src/nestjs-app/
 ├── main.ts                              # Bootstrap
-├── app.module.ts                        # Головний модуль
-├── self-healing-cache.module.ts         # Cache модуль
-├── self-healing-cache.service.ts        # Cache сервіс
-├── constants.ts                         # Константи
+├── app.module.ts                        # Main module
+├── self-healing-cache.module.ts         # Cache module
+├── self-healing-cache.service.ts        # Cache service
+├── constants.ts                         # Constants
 ├── decorators/
-│   └── cache.decorator.ts               # @Cacheable декоратор
+│   └── cache.decorator.ts               # @Cacheable decorator
+├── experiments/
+│   └── experiment-runner.service.ts     # Experiment runner
 ├── users/
 │   ├── users.module.ts
 │   ├── users.controller.ts              # REST API
-│   └── users.service.ts                 # Бізнес логіка
+│   └── users.service.ts                 # Business logic
 └── cache/
     └── cache.controller.ts              # Cache management API
 ```

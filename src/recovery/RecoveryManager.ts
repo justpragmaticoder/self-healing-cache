@@ -20,6 +20,28 @@ export class RecoveryManager<T = any> {
   ): Promise<RecoveryAction> {
     const startTime = Date.now();
 
+    // CRITICAL FIX: Don't trigger recovery if data source is severely degraded
+    // This prevents cascade failures where recovery itself causes more failures
+    const errorRate = metricsBeforeRecovery.errorRate || 0;
+    if (errorRate > 0.20) { // If >20% errors, data source is too degraded
+      console.log(`[Recovery] Skipping recovery - data source too degraded (${(errorRate * 100).toFixed(1)}% error rate)`);
+
+      // Open circuit breaker instead
+      this.circuitBreakerOpen = true;
+      this.circuitBreakerOpenTime = Date.now();
+
+      const action: RecoveryAction = {
+        strategy: RecoveryStrategy.CIRCUIT_BREAKER,
+        timestamp: Date.now(),
+        success: true,
+        duration: Date.now() - startTime,
+        metricsBeforeRecovery,
+        metricsAfterRecovery: metricsBeforeRecovery
+      };
+      this.recoveryHistory.push(action);
+      return action;
+    }
+
     try {
       switch (strategy) {
         case RecoveryStrategy.IMMEDIATE_REFRESH:

@@ -110,9 +110,10 @@ export class FailurePredictor {
       score += featureArray[i] * this.weights[i];
     }
 
-    // Sigmoid activation for probability (adjusted for higher precision)
-    // Higher bias (+7 instead of +5) makes it more conservative
-    return 1 / (1 + Math.exp(-score * 12 + 7));
+    // Sigmoid activation for probability (VERY conservative)
+    // Much higher bias (+9) to avoid false positives
+    // Only trigger when there are REAL problems
+    return 1 / (1 + Math.exp(-score * 15 + 9));
   }
 
   private estimateTimeToFailure(features: FeatureVector): number {
@@ -136,27 +137,29 @@ export class FailurePredictor {
   }
 
   private recommendStrategy(probability: number, features: FeatureVector): RecoveryStrategy {
-    // Critical situation - immediate action needed
-    if (probability > 0.8 || features.currentErrorRate > 0.4) {
+    // VERY conservative thresholds - only act on real problems
+
+    // Critical situation - circuit breaker only when severely degraded
+    if (probability > 0.95 || features.currentErrorRate > 0.35) {
       return RecoveryStrategy.CIRCUIT_BREAKER;
     }
 
-    // High risk - proactive refresh
-    if (probability > 0.6) {
+    // High risk - immediate refresh only when both probability AND error rate are high
+    if (probability > 0.85 && features.currentErrorRate > 0.20) {
       return RecoveryStrategy.IMMEDIATE_REFRESH;
     }
 
-    // Moderate risk - gradual approach
-    if (probability > 0.4) {
+    // Moderate risk - gradual approach only for clear emerging problems
+    if (probability > 0.75 && features.currentErrorRate > 0.15) {
       return RecoveryStrategy.GRADUAL_REFRESH;
     }
 
-    // Low risk - adaptive monitoring
-    if (probability > 0.2) {
+    // Low risk - adaptive monitoring (observe but don't act)
+    if (probability > 0.60) {
       return RecoveryStrategy.ADAPTIVE;
     }
 
-    // Minimal risk - use fallback if needed
+    // Default - fallback (no action)
     return RecoveryStrategy.FALLBACK;
   }
 
@@ -240,7 +243,7 @@ export class FailurePredictor {
     let falseNegatives = 0;
     let timeErrors: number[] = [];
 
-    const threshold = 0.6; // Probability threshold for binary classification (balanced precision/recall)
+    const threshold = 0.85; // VERY conservative threshold to match strategy thresholds
 
     for (const pred of this.predictions) {
       const predictedFailure = pred.predictedProbability >= threshold;

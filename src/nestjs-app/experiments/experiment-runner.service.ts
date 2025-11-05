@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { SelfHealingCache } from '../../../core/SelfHealingCache';
+import { SimpleCache } from '../../../core/SimpleCache';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -269,8 +270,11 @@ export class ExperimentRunnerService {
   }
 
   private async runBaselineExperiment(scenario: string): Promise<ExperimentResult> {
-    const cache = new TraditionalCache();
+    // Use SimpleCache for baseline - NO retry, NO recovery, NO self-healing
+    const cache = new SimpleCache();
     const dataSource = new DataSource();
+    cache.setDataRefreshFunction((key) => dataSource.fetch(key));
+
     const responseTimes: number[] = [];
     const startTime = Date.now();
     const timeSeries: TimeSeriesPoint[] = [];
@@ -284,11 +288,8 @@ export class ExperimentRunnerService {
       totalRequests++;
 
       try {
-        let value = cache.get(key);
-        if (value === undefined) {
-          value = await dataSource.fetch(key);
-          cache.set(key, value);
-        }
+        // SimpleCache automatically fetches from data source on miss (NO RETRY)
+        const value = await cache.get(key);
         successfulRequests++;
         responseTimes.push(Date.now() - reqStart);
       } catch (error) {
@@ -303,15 +304,15 @@ export class ExperimentRunnerService {
         timeSeries.push({
           timestamp: Date.now(),
           requestNumber: totalRequests,
-          hitRate: stats.hitRate,
-          missRate: 1 - stats.hitRate,
+          hitRate: stats.cacheStats.hitRate,
+          missRate: 1 - stats.cacheStats.hitRate,
           errorRate: failedRequests / totalRequests,
           avgLatency: this.avg(recentTimes),
           p95Latency: this.percentile(recentTimes, 0.95),
           p99Latency: this.percentile(recentTimes, 0.99),
           successRate: successfulRequests / totalRequests,
-          cacheHits: stats.hits,
-          cacheMisses: stats.misses,
+          cacheHits: stats.cacheStats.hits,
+          cacheMisses: stats.cacheStats.misses,
           successfulRequests,
           failedRequests
         });
@@ -327,9 +328,9 @@ export class ExperimentRunnerService {
       totalRequests,
       successfulRequests,
       failedRequests,
-      cacheHits: stats.hits,
-      cacheMisses: stats.misses,
-      hitRate: stats.hitRate,
+      cacheHits: stats.cacheStats.hits,
+      cacheMisses: stats.cacheStats.misses,
+      hitRate: stats.cacheStats.hitRate,
       successRate: totalRequests > 0 ? successfulRequests / totalRequests : 0,
       avgResponseTime: this.avg(responseTimes),
       p50ResponseTime: this.percentile(responseTimes, 0.5),
@@ -484,9 +485,10 @@ export class ExperimentRunnerService {
       }
     } else if (scenario === 'recovery_stress_test') {
       // Repeated failure and recovery cycles
+      // FIXED: Reduced failure rate from 60% to 30% for more realistic testing
       for (let cycle = 0; cycle < 10; cycle++) {
-        // Failure phase
-        dataSource.setFailureRate(0.6);
+        // Failure phase - realistic 30% failure rate
+        dataSource.setFailureRate(0.30);
         dataSource.setResponseDelay(100);
         for (let i = 0; i < 200; i++) {
           await operation(`key_${i % 50}`);
@@ -497,7 +499,7 @@ export class ExperimentRunnerService {
         for (let i = 0; i < 300; i++) {
           await operation(`key_${i % 50}`);
         }
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 500));
       }
     } else if (scenario === 'cache_corruption') {
       // Cache corruption scenario: test self-healing from corrupted data

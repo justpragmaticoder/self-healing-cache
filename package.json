@@ -6,14 +6,11 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node src/examples/basic-usage.ts",
     "benchmark": "ts-node src/benchmark/comparison.ts",
     "test": "jest",
-    "demo": "ts-node src/examples/demo.ts",
-    "start": "node dist/examples/nestjs-app/main.js",
-    "start:dev": "ts-node src/examples/nestjs-app/main.ts",
-    "experiment": "./run_experiment.sh",
-    "visualize": "python3 visualize_metrics.py"
+    "start": "node dist/nestjs-app/main.js",
+    "start:dev": "ts-node src/nestjs-app/main.ts",
+    "experiment": "./run_experiment.sh"
   },
   "keywords": [
     "cache",

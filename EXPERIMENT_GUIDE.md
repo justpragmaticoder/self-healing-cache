@@ -188,7 +188,7 @@ GET /ml/training-data?limit=100
 
 ### Inconsistent Results
 - Run experiments multiple times
-- Increase sample size in experiment-runner.service.ts
+- Increase sample size in src/nestjs-app/experiments/experiment-runner.service.ts
 - Check system resources
 
 ### No Improvement Shown
