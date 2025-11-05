@@ -8,6 +8,9 @@ export class RecoveryManager<T = any> {
   private circuitBreakerOpenTime = 0;
   private readonly circuitBreakerTimeout = 30000; // 30 seconds
   private activeRecoveries = new Set<string>();
+  private failedAttempts = new Map<string, number>();
+  private readonly maxRetries = 2;
+  private readonly maxConcurrentRecoveries = 5; // Limit concurrent recoveries
 
   async executeRecovery(
     strategy: RecoveryStrategy,
@@ -71,20 +74,11 @@ export class RecoveryManager<T = any> {
   }
 
   private async immediateRefresh(keys: string[], refreshFunction: DataRefreshFunction<T>): Promise<void> {
-    // Refresh all keys in parallel
-    const promises = keys.map(key =>
-      this.refreshWithTracking(key, refreshFunction)
-    );
+    // Refresh keys with concurrency limit to avoid overwhelming the data source
+    const limitedKeys = keys.slice(0, 20); // Limit to 20 keys max
 
-    await Promise.allSettled(promises);
-  }
-
-  private async gradualRefresh(keys: string[], refreshFunction: DataRefreshFunction<T>): Promise<void> {
-    // Refresh keys in batches to avoid overwhelming the system
-    const batchSize = Math.max(1, Math.floor(keys.length / 10));
-
-    for (let i = 0; i < keys.length; i += batchSize) {
-      const batch = keys.slice(i, i + batchSize);
+    for (let i = 0; i < limitedKeys.length; i += this.maxConcurrentRecoveries) {
+      const batch = limitedKeys.slice(i, i + this.maxConcurrentRecoveries);
       const promises = batch.map(key =>
         this.refreshWithTracking(key, refreshFunction)
       );
@@ -92,8 +86,28 @@ export class RecoveryManager<T = any> {
       await Promise.allSettled(promises);
 
       // Small delay between batches
-      if (i + batchSize < keys.length) {
-        await this.sleep(100);
+      if (i + this.maxConcurrentRecoveries < limitedKeys.length) {
+        await this.sleep(50);
+      }
+    }
+  }
+
+  private async gradualRefresh(keys: string[], refreshFunction: DataRefreshFunction<T>): Promise<void> {
+    // Refresh keys in very small batches with delays
+    const limitedKeys = keys.slice(0, 15); // Even more limited for gradual
+    const batchSize = 3; // Small batches
+
+    for (let i = 0; i < limitedKeys.length; i += batchSize) {
+      const batch = limitedKeys.slice(i, i + batchSize);
+      const promises = batch.map(key =>
+        this.refreshWithTracking(key, refreshFunction)
+      );
+
+      await Promise.allSettled(promises);
+
+      // Longer delay between batches for gradual approach
+      if (i + batchSize < limitedKeys.length) {
+        await this.sleep(200);
       }
     }
   }
@@ -158,10 +172,31 @@ export class RecoveryManager<T = any> {
       return; // Already being recovered
     }
 
+    // Check if this key has failed too many times recently
+    const failCount = this.failedAttempts.get(key) || 0;
+    if (failCount >= this.maxRetries) {
+      // Skip this key - it's failing too much
+      return;
+    }
+
     this.activeRecoveries.add(key);
 
     try {
       await refreshFunction(key);
+      // Success - reset failure count
+      this.failedAttempts.delete(key);
+    } catch (error) {
+      // Record failure
+      this.failedAttempts.set(key, failCount + 1);
+
+      // Clean up old failures after 60 seconds
+      setTimeout(() => {
+        this.failedAttempts.delete(key);
+      }, 60000);
+
+      // Don't throw - just log and continue with other keys
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      console.log(`[Recovery] Failed: ${errorMsg}`);
     } finally {
       this.activeRecoveries.delete(key);
     }
@@ -227,5 +262,6 @@ export class RecoveryManager<T = any> {
     this.recoveryHistory = [];
     this.circuitBreakerOpen = false;
     this.activeRecoveries.clear();
+    this.failedAttempts.clear();
   }
 }

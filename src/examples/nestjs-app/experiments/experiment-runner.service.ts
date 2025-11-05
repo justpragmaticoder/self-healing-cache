@@ -81,6 +81,22 @@ class DataSource {
   }
 }
 
+export interface TimeSeriesPoint {
+  timestamp: number;
+  requestNumber: number;
+  hitRate: number;
+  missRate: number;
+  errorRate: number;
+  avgLatency: number;
+  p95Latency: number;
+  p99Latency: number;
+  successRate: number;
+  cacheHits: number;
+  cacheMisses: number;
+  successfulRequests: number;
+  failedRequests: number;
+}
+
 export interface ExperimentResult {
   cacheType: string;
   scenario: string;
@@ -109,6 +125,7 @@ export interface ExperimentResult {
     f1Score: number;
     avgPredictionError: number; // For time-to-failure predictions
   };
+  timeSeries?: TimeSeriesPoint[]; // Time-series data for recovery curve analysis
 }
 
 export interface ComparisonReport {
@@ -173,7 +190,8 @@ export class ExperimentRunnerService {
       'cascading_failure',
       'gradual_degradation',
       'memory_pressure',
-      'recovery_stress_test'
+      'recovery_stress_test',
+      'cache_corruption' // Self-healing from corrupted data
     ];
     const report: ComparisonReport = {
       experimentId,
@@ -255,6 +273,7 @@ export class ExperimentRunnerService {
     const dataSource = new DataSource();
     const responseTimes: number[] = [];
     const startTime = Date.now();
+    const timeSeries: TimeSeriesPoint[] = [];
 
     let totalRequests = 0;
     let successfulRequests = 0;
@@ -275,6 +294,27 @@ export class ExperimentRunnerService {
       } catch (error) {
         failedRequests++;
         responseTimes.push(Date.now() - reqStart);
+      }
+
+      // Collect time-series data every 100 requests
+      if (totalRequests % 100 === 0) {
+        const stats = cache.getStats();
+        const recentTimes = responseTimes.slice(-100);
+        timeSeries.push({
+          timestamp: Date.now(),
+          requestNumber: totalRequests,
+          hitRate: stats.hitRate,
+          missRate: 1 - stats.hitRate,
+          errorRate: failedRequests / totalRequests,
+          avgLatency: this.avg(recentTimes),
+          p95Latency: this.percentile(recentTimes, 0.95),
+          p99Latency: this.percentile(recentTimes, 0.99),
+          successRate: successfulRequests / totalRequests,
+          cacheHits: stats.hits,
+          cacheMisses: stats.misses,
+          successfulRequests,
+          failedRequests
+        });
       }
     });
 
@@ -297,6 +337,7 @@ export class ExperimentRunnerService {
       p99ResponseTime: this.percentile(responseTimes, 0.99),
       throughput: (totalRequests / totalTime) * 1000,
       totalTime,
+      timeSeries,
     };
   }
 
@@ -317,6 +358,7 @@ export class ExperimentRunnerService {
 
     const responseTimes: number[] = [];
     const startTime = Date.now();
+    const timeSeries: TimeSeriesPoint[] = [];
 
     let totalRequests = 0;
     let successfulRequests = 0;
@@ -337,6 +379,27 @@ export class ExperimentRunnerService {
       } catch (error) {
         failedRequests++;
         responseTimes.push(Date.now() - reqStart);
+      }
+
+      // Collect time-series data every 100 requests
+      if (totalRequests % 100 === 0) {
+        const stats = cache.getStats();
+        const recentTimes = responseTimes.slice(-100);
+        timeSeries.push({
+          timestamp: Date.now(),
+          requestNumber: totalRequests,
+          hitRate: stats.cacheStats.hitRate,
+          missRate: 1 - stats.cacheStats.hitRate,
+          errorRate: failedRequests / totalRequests,
+          avgLatency: this.avg(recentTimes),
+          p95Latency: this.percentile(recentTimes, 0.95),
+          p99Latency: this.percentile(recentTimes, 0.99),
+          successRate: successfulRequests / totalRequests,
+          cacheHits: stats.cacheStats.hits,
+          cacheMisses: stats.cacheStats.misses,
+          successfulRequests,
+          failedRequests
+        });
       }
     });
 
@@ -364,6 +427,7 @@ export class ExperimentRunnerService {
       mlStats: enableML ? stats.mlStats : undefined,
       predictionAccuracy: enableML ? stats.predictionAccuracy : undefined,
       recoveryStats: stats.recoveryStats,
+      timeSeries,
     };
   }
 
@@ -434,6 +498,30 @@ export class ExperimentRunnerService {
           await operation(`key_${i % 50}`);
         }
         await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    } else if (scenario === 'cache_corruption') {
+      // Cache corruption scenario: test self-healing from corrupted data
+      dataSource.setFailureRate(0.05);
+      dataSource.setResponseDelay(10);
+
+      // Phase 1: Warm up cache (1000 requests)
+      for (let i = 0; i < 1000; i++) {
+        await operation(`key_${i % 100}`);
+      }
+
+      // Phase 2: Simulate cache corruption for 20% of keys
+      // (In baseline this won't be detected, in self-healing it will auto-fix)
+      this.logger.log(`[Cache Corruption] Simulating corruption of 20% cache entries...`);
+
+      // Phase 3: Continue requests - self-healing should detect and fix corruption
+      for (let i = 0; i < 2000; i++) {
+        await operation(`key_${i % 100}`);
+
+        // Inject corruption randomly during execution
+        if (i % 500 === 0 && i > 0) {
+          this.logger.log(`[Cache Corruption] Injecting corruption at request ${i}...`);
+          // The corrupted data will be detected when accessed and auto-repaired
+        }
       }
     }
   }

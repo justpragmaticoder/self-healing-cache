@@ -517,6 +517,246 @@ def create_scenario_comparison(experiment_file):
     print('✓ Created: charts/scenario_comparison.png')
     plt.close()
 
+def create_recovery_curves(experiment_file):
+    """Create recovery curves showing hit-rate restoration over time"""
+
+    with open(experiment_file, 'r') as f:
+        data = json.load(f)
+
+    scenarios = data.get('scenarios', {})
+
+    # Focus on scenarios with notable failures
+    stress_scenarios = ['cascading_failure', 'gradual_degradation', 'recovery_stress_test', 'cache_corruption']
+
+    for scenario_name in stress_scenarios:
+        if scenario_name not in scenarios:
+            continue
+
+        scenario = scenarios[scenario_name]
+
+        baseline_ts = scenario.get('baseline', {}).get('timeSeries', [])
+        self_healing_ts = scenario.get('selfHealing', {}).get('timeSeries', [])
+        ml_ts = scenario.get('selfHealingML', {}).get('timeSeries', [])
+
+        if not baseline_ts or not self_healing_ts or not ml_ts:
+            continue
+
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 10))
+
+        # Extract data
+        baseline_reqs = [p['requestNumber'] for p in baseline_ts]
+        baseline_hitrate = [p['hitRate'] * 100 for p in baseline_ts]
+        baseline_successrate = [p['successRate'] * 100 for p in baseline_ts]
+
+        sh_reqs = [p['requestNumber'] for p in self_healing_ts]
+        sh_hitrate = [p['hitRate'] * 100 for p in self_healing_ts]
+        sh_successrate = [p['successRate'] * 100 for p in self_healing_ts]
+
+        ml_reqs = [p['requestNumber'] for p in ml_ts]
+        ml_hitrate = [p['hitRate'] * 100 for p in ml_ts]
+        ml_successrate = [p['successRate'] * 100 for p in ml_ts]
+
+        # Plot 1: Hit Rate Recovery
+        ax1.plot(baseline_reqs, baseline_hitrate, label='Baseline Cache',
+                linewidth=2.5, color='#FF6B6B', marker='o', markersize=4, markevery=5)
+        ax1.plot(sh_reqs, sh_hitrate, label='Self-Healing (No ML)',
+                linewidth=2.5, color='#FFD93D', marker='s', markersize=4, markevery=5)
+        ax1.plot(ml_reqs, ml_hitrate, label='Self-Healing (ML)',
+                linewidth=2.5, color='#4ECDC4', marker='^', markersize=4, markevery=5)
+
+        ax1.set_xlabel('Request Number', fontsize=11, fontweight='bold')
+        ax1.set_ylabel('Cache Hit Rate (%)', fontsize=11, fontweight='bold')
+        ax1.set_title(f'Hit Rate Recovery - {scenario_name.replace("_", " ").title()}',
+                     fontsize=12, fontweight='bold')
+        ax1.legend(loc='best', fontsize=10)
+        ax1.grid(True, alpha=0.3, linestyle='--')
+        ax1.set_ylim(0, 105)
+
+        # Plot 2: Success Rate Recovery
+        ax2.plot(baseline_reqs, baseline_successrate, label='Baseline Cache',
+                linewidth=2.5, color='#FF6B6B', marker='o', markersize=4, markevery=5)
+        ax2.plot(sh_reqs, sh_successrate, label='Self-Healing (No ML)',
+                linewidth=2.5, color='#FFD93D', marker='s', markersize=4, markevery=5)
+        ax2.plot(ml_reqs, ml_successrate, label='Self-Healing (ML)',
+                linewidth=2.5, color='#4ECDC4', marker='^', markersize=4, markevery=5)
+
+        ax2.set_xlabel('Request Number', fontsize=11, fontweight='bold')
+        ax2.set_ylabel('Success Rate (%)', fontsize=11, fontweight='bold')
+        ax2.set_title(f'Success Rate Recovery - {scenario_name.replace("_", " ").title()}',
+                     fontsize=12, fontweight='bold')
+        ax2.legend(loc='best', fontsize=10)
+        ax2.grid(True, alpha=0.3, linestyle='--')
+        ax2.set_ylim(85, 105)
+
+        plt.tight_layout()
+        filename = f'charts/recovery_curve_{scenario_name}.png'
+        plt.savefig(filename, bbox_inches='tight', dpi=300)
+        print(f'✓ Created: {filename}')
+        plt.close()
+
+def create_mttr_comparison(experiment_file):
+    """Create MTTR comparison chart from time-series data"""
+
+    with open(experiment_file, 'r') as f:
+        data = json.load(f)
+
+    scenarios = data.get('scenarios', {})
+
+    # Calculate MTTR for each scenario
+    scenario_names = []
+    baseline_mttr = []
+    sh_mttr = []
+    ml_mttr = []
+
+    for scenario_name, scenario in scenarios.items():
+        baseline_ts = scenario.get('baseline', {}).get('timeSeries', [])
+        sh_ts = scenario.get('selfHealing', {}).get('timeSeries', [])
+        ml_ts = scenario.get('selfHealingML', {}).get('timeSeries', [])
+
+        if not baseline_ts or not sh_ts or not ml_ts:
+            continue
+
+        # Calculate MTTR: time to recover to 95% hit rate after dropping below 90%
+        def calculate_mttr(timeseries):
+            recovery_times = []
+            failure_start = None
+
+            for i, point in enumerate(timeseries):
+                hit_rate = point['hitRate']
+                req_num = point['requestNumber']
+
+                # Detect failure (hit rate drops below 90%)
+                if hit_rate < 0.90 and failure_start is None:
+                    failure_start = req_num
+
+                # Detect recovery (hit rate rises above 95%)
+                elif hit_rate >= 0.95 and failure_start is not None:
+                    recovery_time = req_num - failure_start
+                    recovery_times.append(recovery_time)
+                    failure_start = None
+
+            return np.mean(recovery_times) if recovery_times else 0
+
+        baseline_mttr_val = calculate_mttr(baseline_ts)
+        sh_mttr_val = calculate_mttr(sh_ts)
+        ml_mttr_val = calculate_mttr(ml_ts)
+
+        if baseline_mttr_val > 0 or sh_mttr_val > 0 or ml_mttr_val > 0:
+            scenario_names.append(scenario_name.replace('_', '\n'))
+            baseline_mttr.append(baseline_mttr_val)
+            sh_mttr.append(sh_mttr_val)
+            ml_mttr.append(ml_mttr_val)
+
+    if not scenario_names:
+        print('⚠️  No MTTR data available')
+        return
+
+    # Create chart
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    x = np.arange(len(scenario_names))
+    width = 0.25
+
+    bars1 = ax.bar(x - width, baseline_mttr, width, label='Baseline Cache',
+                   color='#FF6B6B', alpha=0.8, edgecolor='black', linewidth=1.2)
+    bars2 = ax.bar(x, sh_mttr, width, label='Self-Healing (No ML)',
+                   color='#FFD93D', alpha=0.8, edgecolor='black', linewidth=1.2)
+    bars3 = ax.bar(x + width, ml_mttr, width, label='Self-Healing (ML)',
+                   color='#4ECDC4', alpha=0.8, edgecolor='black', linewidth=1.2)
+
+    # Add value labels
+    for bars in [bars1, bars2, bars3]:
+        for bar in bars:
+            height = bar.get_height()
+            if height > 0:
+                ax.text(bar.get_x() + bar.get_width()/2., height,
+                       f'{int(height)}',
+                       ha='center', va='bottom', fontsize=9, fontweight='bold')
+
+    ax.set_xlabel('Scenario', fontsize=12, fontweight='bold')
+    ax.set_ylabel('Mean Time To Recovery (requests)', fontsize=12, fontweight='bold')
+    ax.set_title('MTTR Comparison: Time to Recover Cache Hit Rate',
+                fontsize=14, fontweight='bold', pad=20)
+    ax.set_xticks(x)
+    ax.set_xticklabels(scenario_names, fontsize=9)
+    ax.legend(loc='upper right', fontsize=11, framealpha=0.9)
+    ax.grid(axis='y', alpha=0.3, linestyle='--')
+    ax.set_axisbelow(True)
+
+    plt.tight_layout()
+    plt.savefig('charts/mttr_comparison.png', bbox_inches='tight', dpi=300)
+    print('✓ Created: charts/mttr_comparison.png')
+    plt.close()
+
+def create_latency_area_under_curve(experiment_file):
+    """Create area-under-curve comparison for latency"""
+
+    with open(experiment_file, 'r') as f:
+        data = json.load(f)
+
+    scenarios = data.get('scenarios', {})
+
+    # Focus on key scenarios
+    key_scenarios = ['cascading_failure', 'gradual_degradation', 'high_failure', 'recovery_stress_test']
+
+    fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+    axes = axes.flatten()
+
+    for idx, scenario_name in enumerate(key_scenarios):
+        if scenario_name not in scenarios or idx >= 4:
+            continue
+
+        scenario = scenarios[scenario_name]
+        ax = axes[idx]
+
+        baseline_ts = scenario.get('baseline', {}).get('timeSeries', [])
+        sh_ts = scenario.get('selfHealing', {}).get('timeSeries', [])
+        ml_ts = scenario.get('selfHealingML', {}).get('timeSeries', [])
+
+        if not baseline_ts or not sh_ts or not ml_ts:
+            continue
+
+        # Extract latency data
+        baseline_reqs = [p['requestNumber'] for p in baseline_ts]
+        baseline_latency = [p['avgLatency'] for p in baseline_ts]
+
+        sh_reqs = [p['requestNumber'] for p in sh_ts]
+        sh_latency = [p['avgLatency'] for p in sh_ts]
+
+        ml_reqs = [p['requestNumber'] for p in ml_ts]
+        ml_latency = [p['avgLatency'] for p in ml_ts]
+
+        # Calculate area under curve
+        baseline_auc = np.trapz(baseline_latency, baseline_reqs)
+        sh_auc = np.trapz(sh_latency, sh_reqs)
+        ml_auc = np.trapz(ml_latency, ml_reqs)
+
+        # Plot with filled area
+        ax.fill_between(baseline_reqs, baseline_latency, alpha=0.3, color='#FF6B6B',
+                        label=f'Baseline (AUC: {baseline_auc:.0f})')
+        ax.plot(baseline_reqs, baseline_latency, linewidth=2, color='#FF6B6B')
+
+        ax.fill_between(sh_reqs, sh_latency, alpha=0.3, color='#FFD93D',
+                        label=f'Self-Healing No ML (AUC: {sh_auc:.0f})')
+        ax.plot(sh_reqs, sh_latency, linewidth=2, color='#FFD93D')
+
+        ax.fill_between(ml_reqs, ml_latency, alpha=0.3, color='#4ECDC4',
+                        label=f'Self-Healing ML (AUC: {ml_auc:.0f})')
+        ax.plot(ml_reqs, ml_latency, linewidth=2, color='#4ECDC4')
+
+        ax.set_xlabel('Request Number', fontsize=10, fontweight='bold')
+        ax.set_ylabel('Avg Latency (ms)', fontsize=10, fontweight='bold')
+        ax.set_title(scenario_name.replace('_', ' ').title(), fontsize=11, fontweight='bold')
+        ax.legend(loc='best', fontsize=8)
+        ax.grid(True, alpha=0.3, linestyle='--')
+
+    plt.suptitle('Latency Area-Under-Curve Comparison',
+                 fontsize=14, fontweight='bold', y=1.00)
+    plt.tight_layout()
+    plt.savefig('charts/latency_auc_comparison.png', bbox_inches='tight', dpi=300)
+    print('✓ Created: charts/latency_auc_comparison.png')
+    plt.close()
+
 def main():
     """Main function to generate all visualizations"""
 
@@ -548,8 +788,14 @@ def main():
         try:
             create_ml_learning_curves(latest_experiment)
             create_scenario_comparison(latest_experiment)
+            print("\n📊 Creating time-series based charts...")
+            create_recovery_curves(latest_experiment)
+            create_mttr_comparison(latest_experiment)
+            create_latency_area_under_curve(latest_experiment)
         except Exception as e:
             print(f"⚠️  Warning: Could not create ML analysis charts: {e}")
+            import traceback
+            traceback.print_exc()
 
     print("\n" + "=" * 60)
     print("✅ All visualizations generated successfully!")
@@ -564,6 +810,9 @@ def main():
     print("  7. comparison_table.png - Summary comparison table")
     print("  8. ml_comprehensive_analysis.png - ML metrics & improvements")
     print("  9. scenario_comparison.png - Detailed scenario comparison")
+    print("  10. recovery_curve_*.png - Recovery curves for each scenario")
+    print("  11. mttr_comparison.png - Mean Time To Recovery comparison")
+    print("  12. latency_auc_comparison.png - Latency area-under-curve")
     print("\n💡 Use these charts in your thesis/paper!")
     print("=" * 60 + "\n")
 
