@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: self-healing-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - cache-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: self-healing-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: cache_metrics
+      MYSQL_USER: cacheuser
+      MYSQL_PASSWORD: cachepass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "cacheuser", "-pcachepass"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - cache-network
+
+  app:
+    build: .
+    container_name: self-healing-app
+    depends_on:
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_USER: cacheuser
+      MYSQL_PASSWORD: cachepass
+      MYSQL_DATABASE: cache_metrics
+      NODE_ENV: production
+      ENABLE_REDIS: "true"
+      ENABLE_MYSQL: "true"
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/cache/health/detailed"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    networks:
+      - cache-network
+    command: npm run start
+
+volumes:
+  mysql-data:
+
+networks:
+  cache-network:
+    driver: bridge

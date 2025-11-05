@@ -1,0 +1,1309 @@
+{
+  "experimentId": "experiment_1762301790118",
+  "timestamp": 1762301790118,
+  "scenarios": {
+    "normal": {
+      "baseline": {
+        "cacheType": "baseline",
+        "scenario": "normal",
+        "totalRequests": 5000,
+        "successfulRequests": 4993,
+        "failedRequests": 7,
+        "cacheHits": 4893,
+        "cacheMisses": 107,
+        "hitRate": 0.9786,
+        "successRate": 0.9986,
+        "avgResponseTime": 0.2486,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 0,
+        "p99ResponseTime": 11,
+        "throughput": 3974.56279809221,
+        "totalTime": 1258
+      },
+      "selfHealing": {
+        "cacheType": "self_healing_no_ml",
+        "scenario": "normal",
+        "totalRequests": 5000,
+        "successfulRequests": 4991,
+        "failedRequests": 9,
+        "cacheHits": 4891,
+        "cacheMisses": 109,
+        "hitRate": 0.9782,
+        "successRate": 0.9982,
+        "avgResponseTime": 0.2622,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 0,
+        "p99ResponseTime": 12,
+        "throughput": 3785.011355034065,
+        "totalTime": 1321,
+        "recoveryStats": {
+          "successRate": 1,
+          "bestStrategy": "adaptive",
+          "history": []
+        }
+      },
+      "selfHealingML": {
+        "cacheType": "self_healing_with_ml",
+        "scenario": "normal",
+        "totalRequests": 5000,
+        "successfulRequests": 4995,
+        "failedRequests": 5,
+        "cacheHits": 4895,
+        "cacheMisses": 105,
+        "hitRate": 0.979,
+        "successRate": 0.999,
+        "avgResponseTime": 0.261,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 0,
+        "p99ResponseTime": 12,
+        "throughput": 3819.7097020626434,
+        "totalTime": 1309,
+        "mlStats": {
+          "dataPoints": 2,
+          "weights": [
+            0.3,
+            0.25,
+            0.2,
+            0.15,
+            0.07,
+            0.03
+          ]
+        },
+        "predictionAccuracy": {
+          "totalPredictions": 50,
+          "correctPredictions": 50,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "precision": 0,
+          "recall": 0,
+          "f1Score": 0,
+          "avgPredictionError": 0
+        },
+        "recoveryStats": {
+          "successRate": 1,
+          "bestStrategy": "adaptive",
+          "history": []
+        }
+      },
+      "improvements": {
+        "successRateImprovement": {
+          "vsBaseline": 0.04005607850990947,
+          "vsNoML": 0.08014425966740363
+        },
+        "hitRateImprovement": {
+          "vsBaseline": 0.04087471898630247,
+          "vsNoML": 0.08178286648947279
+        },
+        "responseTimeImprovement": {
+          "vsBaseline": -4.98793242156075,
+          "vsNoML": 0.4576659038901521
+        },
+        "throughputImprovement": {
+          "vsBaseline": -3.896103896103895,
+          "vsNoML": 0.9167303284950348
+        }
+      },
+      "statisticalSignificance": {
+        "successRateSignificant": false,
+        "hitRateSignificant": false,
+        "responseTimeSignificant": false,
+        "confidenceLevel": 0.95
+      }
+    },
+    "high_failure": {
+      "baseline": {
+        "cacheType": "baseline",
+        "scenario": "high_failure",
+        "totalRequests": 3000,
+        "successfulRequests": 2980,
+        "failedRequests": 20,
+        "cacheHits": 2930,
+        "cacheMisses": 70,
+        "hitRate": 0.9766666666666667,
+        "successRate": 0.9933333333333333,
+        "avgResponseTime": 1.2203333333333333,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 0,
+        "p99ResponseTime": 52,
+        "throughput": 817.6614881439084,
+        "totalTime": 3669
+      },
+      "selfHealing": {
+        "cacheType": "self_healing_no_ml",
+        "scenario": "high_failure",
+        "totalRequests": 3000,
+        "successfulRequests": 2977,
+        "failedRequests": 23,
+        "cacheHits": 2927,
+        "cacheMisses": 73,
+        "hitRate": 0.9756666666666667,
+        "successRate": 0.9923333333333333,
+        "avgResponseTime": 1.2806666666666666,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 0,
+        "p99ResponseTime": 52,
+        "throughput": 779.6257796257796,
+        "totalTime": 3848,
+        "recoveryStats": {
+          "successRate": 1,
+          "bestStrategy": "adaptive",
+          "history": []
+        }
+      },
+      "selfHealingML": {
+        "cacheType": "self_healing_with_ml",
+        "scenario": "high_failure",
+        "totalRequests": 3000,
+        "successfulRequests": 2971,
+        "failedRequests": 29,
+        "cacheHits": 2921,
+        "cacheMisses": 79,
+        "hitRate": 0.9736666666666667,
+        "successRate": 0.9903333333333333,
+        "avgResponseTime": 1.3813333333333333,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 0,
+        "p99ResponseTime": 52,
+        "throughput": 723.4145165179649,
+        "totalTime": 4147,
+        "mlStats": {
+          "dataPoints": 30,
+          "weights": [
+            0.3,
+            0.25,
+            0.2,
+            0.15,
+            0.07,
+            0.03
+          ]
+        },
+        "predictionAccuracy": {
+          "totalPredictions": 30,
+          "correctPredictions": 30,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "precision": 0,
+          "recall": 0,
+          "f1Score": 0,
+          "avgPredictionError": 0
+        },
+        "recoveryStats": {
+          "successRate": 1,
+          "bestStrategy": "adaptive",
+          "history": []
+        }
+      },
+      "improvements": {
+        "successRateImprovement": {
+          "vsBaseline": -0.30201342281879223,
+          "vsNoML": -0.20154517971111874
+        },
+        "hitRateImprovement": {
+          "vsBaseline": -0.30716723549488084,
+          "vsNoML": -0.20498804236419563
+        },
+        "responseTimeImprovement": {
+          "vsBaseline": -13.193116634799237,
+          "vsNoML": -7.860489328474754
+        },
+        "throughputImprovement": {
+          "vsBaseline": -11.526404629852891,
+          "vsNoML": -7.210031347962367
+        }
+      },
+      "statisticalSignificance": {
+        "successRateSignificant": false,
+        "hitRateSignificant": false,
+        "responseTimeSignificant": false,
+        "confidenceLevel": 0.95
+      }
+    },
+    "burst_traffic": {
+      "baseline": {
+        "cacheType": "baseline",
+        "scenario": "burst_traffic",
+        "totalRequests": 4000,
+        "successfulRequests": 3994,
+        "failedRequests": 6,
+        "cacheHits": 3894,
+        "cacheMisses": 106,
+        "hitRate": 0.9735,
+        "successRate": 0.9985,
+        "avgResponseTime": 0.3845,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 0,
+        "p99ResponseTime": 12,
+        "throughput": 608.1800212863008,
+        "totalTime": 6577
+      },
+      "selfHealing": {
+        "cacheType": "self_healing_no_ml",
+        "scenario": "burst_traffic",
+        "totalRequests": 4000,
+        "successfulRequests": 3995,
+        "failedRequests": 5,
+        "cacheHits": 3895,
+        "cacheMisses": 105,
+        "hitRate": 0.97375,
+        "successRate": 0.99875,
+        "avgResponseTime": 0.44525,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 0,
+        "p99ResponseTime": 12,
+        "throughput": 587.1990604815032,
+        "totalTime": 6812,
+        "recoveryStats": {
+          "successRate": 1,
+          "bestStrategy": "adaptive",
+          "history": []
+        }
+      },
+      "selfHealingML": {
+        "cacheType": "self_healing_with_ml",
+        "scenario": "burst_traffic",
+        "totalRequests": 4000,
+        "successfulRequests": 3991,
+        "failedRequests": 9,
+        "cacheHits": 3891,
+        "cacheMisses": 109,
+        "hitRate": 0.97275,
+        "successRate": 0.99775,
+        "avgResponseTime": 0.389,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 0,
+        "p99ResponseTime": 12,
+        "throughput": 606.7961165048544,
+        "totalTime": 6592,
+        "mlStats": {
+          "dataPoints": 1,
+          "weights": [
+            0.3,
+            0.25,
+            0.2,
+            0.15,
+            0.07,
+            0.03
+          ]
+        },
+        "predictionAccuracy": {
+          "totalPredictions": 40,
+          "correctPredictions": 40,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "precision": 0,
+          "recall": 0,
+          "f1Score": 0,
+          "avgPredictionError": 0
+        },
+        "recoveryStats": {
+          "successRate": 1,
+          "bestStrategy": "adaptive",
+          "history": []
+        }
+      },
+      "improvements": {
+        "successRateImprovement": {
+          "vsBaseline": -0.0751126690035081,
+          "vsNoML": -0.10012515644555703
+        },
+        "hitRateImprovement": {
+          "vsBaseline": -0.0770416024653342,
+          "vsNoML": -0.10269576379974335
+        },
+        "responseTimeImprovement": {
+          "vsBaseline": -1.1703511053316005,
+          "vsNoML": 12.633352049410437
+        },
+        "throughputImprovement": {
+          "vsBaseline": -0.22754854368932492,
+          "vsNoML": 3.337378640776695
+        }
+      },
+      "statisticalSignificance": {
+        "successRateSignificant": false,
+        "hitRateSignificant": false,
+        "responseTimeSignificant": false,
+        "confidenceLevel": 0.95
+      }
+    },
+    "cascading_failure": {
+      "baseline": {
+        "cacheType": "baseline",
+        "scenario": "cascading_failure",
+        "totalRequests": 5000,
+        "successfulRequests": 4988,
+        "failedRequests": 12,
+        "cacheHits": 4908,
+        "cacheMisses": 92,
+        "hitRate": 0.9816,
+        "successRate": 0.9976,
+        "avgResponseTime": 0.406,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 0,
+        "p99ResponseTime": 22,
+        "throughput": 2439.0243902439024,
+        "totalTime": 2050
+      },
+      "selfHealing": {
+        "cacheType": "self_healing_no_ml",
+        "scenario": "cascading_failure",
+        "totalRequests": 5000,
+        "successfulRequests": 4994,
+        "failedRequests": 6,
+        "cacheHits": 4914,
+        "cacheMisses": 86,
+        "hitRate": 0.9828,
+        "successRate": 0.9988,
+        "avgResponseTime": 0.3872,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 0,
+        "p99ResponseTime": 22,
+        "throughput": 2569.373072970195,
+        "totalTime": 1946,
+        "recoveryStats": {
+          "successRate": 1,
+          "bestStrategy": "adaptive",
+          "history": []
+        }
+      },
+      "selfHealingML": {
+        "cacheType": "self_healing_with_ml",
+        "scenario": "cascading_failure",
+        "totalRequests": 5000,
+        "successfulRequests": 4989,
+        "failedRequests": 11,
+        "cacheHits": 4909,
+        "cacheMisses": 91,
+        "hitRate": 0.9818,
+        "successRate": 0.9978,
+        "avgResponseTime": 0.4044,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 0,
+        "p99ResponseTime": 21,
+        "throughput": 2472.799208704253,
+        "totalTime": 2022,
+        "mlStats": {
+          "dataPoints": 50,
+          "weights": [
+            0.29999525604954674,
+            0.24999605785721987,
+            0.19999659271792739,
+            0.15001363371875384,
+            0.06999890150022538,
+            0.02999955815632685
+          ]
+        },
+        "predictionAccuracy": {
+          "totalPredictions": 50,
+          "correctPredictions": 50,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "precision": 0,
+          "recall": 0,
+          "f1Score": 0,
+          "avgPredictionError": 0
+        },
+        "recoveryStats": {
+          "successRate": 1,
+          "bestStrategy": "adaptive",
+          "history": []
+        }
+      },
+      "improvements": {
+        "successRateImprovement": {
+          "vsBaseline": 0.020048115477142938,
+          "vsNoML": -0.1001201441730077
+        },
+        "hitRateImprovement": {
+          "vsBaseline": 0.020374898125507128,
+          "vsNoML": -0.10175010175010182
+        },
+        "responseTimeImprovement": {
+          "vsBaseline": 0.39408866995075015,
+          "vsNoML": -4.442148760330577
+        },
+        "throughputImprovement": {
+          "vsBaseline": 1.3847675568743751,
+          "vsNoML": -3.7586547972304674
+        }
+      },
+      "statisticalSignificance": {
+        "successRateSignificant": false,
+        "hitRateSignificant": false,
+        "responseTimeSignificant": false,
+        "confidenceLevel": 0.95
+      }
+    },
+    "gradual_degradation": {
+      "baseline": {
+        "cacheType": "baseline",
+        "scenario": "gradual_degradation",
+        "totalRequests": 5000,
+        "successfulRequests": 4993,
+        "failedRequests": 7,
+        "cacheHits": 4893,
+        "cacheMisses": 107,
+        "hitRate": 0.9786,
+        "successRate": 0.9986,
+        "avgResponseTime": 0.2586,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 0,
+        "p99ResponseTime": 12,
+        "throughput": 3808.073115003808,
+        "totalTime": 1313
+      },
+      "selfHealing": {
+        "cacheType": "self_healing_no_ml",
+        "scenario": "gradual_degradation",
+        "totalRequests": 5000,
+        "successfulRequests": 4996,
+        "failedRequests": 4,
+        "cacheHits": 4896,
+        "cacheMisses": 104,
+        "hitRate": 0.9792,
+        "successRate": 0.9992,
+        "avgResponseTime": 0.256,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 0,
+        "p99ResponseTime": 12,
+        "throughput": 3885.003885003885,
+        "totalTime": 1287,
+        "recoveryStats": {
+          "successRate": 1,
+          "bestStrategy": "adaptive",
+          "history": []
+        }
+      },
+      "selfHealingML": {
+        "cacheType": "self_healing_with_ml",
+        "scenario": "gradual_degradation",
+        "totalRequests": 5000,
+        "successfulRequests": 4995,
+        "failedRequests": 5,
+        "cacheHits": 4895,
+        "cacheMisses": 105,
+        "hitRate": 0.979,
+        "successRate": 0.999,
+        "avgResponseTime": 0.2572,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 0,
+        "p99ResponseTime": 12,
+        "throughput": 3866.9760247486465,
+        "totalTime": 1293,
+        "mlStats": {
+          "dataPoints": 2,
+          "weights": [
+            0.3,
+            0.25,
+            0.2,
+            0.15,
+            0.07,
+            0.03
+          ]
+        },
+        "predictionAccuracy": {
+          "totalPredictions": 50,
+          "correctPredictions": 50,
+          "falsePositives": 0,
+          "falseNegatives": 0,
+          "precision": 0,
+          "recall": 0,
+          "f1Score": 0,
+          "avgPredictionError": 0
+        },
+        "recoveryStats": {
+          "successRate": 1,
+          "bestStrategy": "adaptive",
+          "history": []
+        }
+      },
+      "improvements": {
+        "successRateImprovement": {
+          "vsBaseline": 0.04005607850990947,
+          "vsNoML": -0.020016012810245995
+        },
+        "hitRateImprovement": {
+          "vsBaseline": 0.04087471898630247,
+          "vsNoML": -0.02042483660130494
+        },
+        "responseTimeImprovement": {
+          "vsBaseline": 0.5413766434648153,
+          "vsNoML": -0.46874999999999173
+        },
+        "throughputImprovement": {
+          "vsBaseline": 1.5467904098994545,
+          "vsNoML": -0.46403712296983807
+        }
+      },
+      "statisticalSignificance": {
+        "successRateSignificant": false,
+        "hitRateSignificant": false,
+        "responseTimeSignificant": false,
+        "confidenceLevel": 0.95
+      }
+    },
+    "memory_pressure": {
+      "baseline": {
+        "cacheType": "baseline",
+        "scenario": "memory_pressure",
+        "totalRequests": 10000,
+        "successfulRequests": 9951,
+        "failedRequests": 49,
+        "cacheHits": 9451,
+        "cacheMisses": 549,
+        "hitRate": 0.9451,
+        "successRate": 0.9951,
+        "avgResponseTime": 0.9237,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 15,
+        "p99ResponseTime": 18,
+        "throughput": 1078.3996549121105,
+        "totalTime": 9273
+      },
+      "selfHealing": {
+        "cacheType": "self_healing_no_ml",
+        "scenario": "memory_pressure",
+        "totalRequests": 10000,
+        "successfulRequests": 9943,
+        "failedRequests": 57,
+        "cacheHits": 9443,
+        "cacheMisses": 557,
+        "hitRate": 0.9443,
+        "successRate": 0.9943,
+        "avgResponseTime": 0.9393,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 15,
+        "p99ResponseTime": 18,
+        "throughput": 1062.0220900594732,
+        "totalTime": 9416,
+        "recoveryStats": {
+          "successRate": 1,
+          "bestStrategy": "adaptive",
+          "history": [
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762301849914,
+              "success": true,
+              "duration": 18,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762301849894,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 0.0945945945945946,
+                "avgResponseTime": 16.867796610169492,
+                "memoryUsage": 23.742637634277344,
+                "failureCount": 28
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762301849914,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 0.09427609427609428,
+                "avgResponseTime": 16.87837837837838,
+                "memoryUsage": 23.971389770507812,
+                "failureCount": 28
+              }
+            }
+          ]
+        }
+      },
+      "selfHealingML": {
+        "cacheType": "self_healing_with_ml",
+        "scenario": "memory_pressure",
+        "totalRequests": 10000,
+        "successfulRequests": 9949,
+        "failedRequests": 51,
+        "cacheHits": 9449,
+        "cacheMisses": 551,
+        "hitRate": 0.9449,
+        "successRate": 0.9949,
+        "avgResponseTime": 0.9241,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 15,
+        "p99ResponseTime": 18,
+        "throughput": 1080.497028633171,
+        "totalTime": 9255,
+        "mlStats": {
+          "dataPoints": 101,
+          "weights": [
+            0.3,
+            0.25,
+            0.2,
+            0.15,
+            0.07,
+            0.03
+          ]
+        },
+        "predictionAccuracy": {
+          "totalPredictions": 101,
+          "correctPredictions": 99,
+          "falsePositives": 0,
+          "falseNegatives": 2,
+          "precision": 0,
+          "recall": 0,
+          "f1Score": 0,
+          "avgPredictionError": 0
+        },
+        "recoveryStats": {
+          "successRate": 1,
+          "bestStrategy": "adaptive",
+          "history": [
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762301859331,
+              "success": true,
+              "duration": 18,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762301859313,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 0.10067114093959731,
+                "avgResponseTime": 16.767676767676768,
+                "memoryUsage": 24.05322265625,
+                "failureCount": 30
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762301859331,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 0.10033444816053512,
+                "avgResponseTime": 16.761744966442954,
+                "memoryUsage": 24.267311096191406,
+                "failureCount": 30
+              }
+            }
+          ]
+        }
+      },
+      "improvements": {
+        "successRateImprovement": {
+          "vsBaseline": -0.02009848256456416,
+          "vsNoML": 0.060343960575283614
+        },
+        "hitRateImprovement": {
+          "vsBaseline": -0.02116178182203883,
+          "vsNoML": 0.06353912951391866
+        },
+        "responseTimeImprovement": {
+          "vsBaseline": -0.043304103063772546,
+          "vsNoML": 1.6182263387629077
+        },
+        "throughputImprovement": {
+          "vsBaseline": 0.19448946515395396,
+          "vsNoML": 1.7396002160993997
+        }
+      },
+      "statisticalSignificance": {
+        "successRateSignificant": false,
+        "hitRateSignificant": false,
+        "responseTimeSignificant": false,
+        "confidenceLevel": 0.95
+      }
+    },
+    "recovery_stress_test": {
+      "baseline": {
+        "cacheType": "baseline",
+        "scenario": "recovery_stress_test",
+        "totalRequests": 5000,
+        "successfulRequests": 4936,
+        "failedRequests": 64,
+        "cacheHits": 4886,
+        "cacheMisses": 114,
+        "hitRate": 0.9772,
+        "successRate": 0.9872,
+        "avgResponseTime": 2.2564,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 0,
+        "p99ResponseTime": 102,
+        "throughput": 234.46658851113716,
+        "totalTime": 21325
+      },
+      "selfHealing": {
+        "cacheType": "self_healing_no_ml",
+        "scenario": "recovery_stress_test",
+        "totalRequests": 5000,
+        "successfulRequests": 4473,
+        "failedRequests": 527,
+        "cacheHits": 3293,
+        "cacheMisses": 50,
+        "hitRate": 0.9850433742147772,
+        "successRate": 0.8946,
+        "avgResponseTime": 18.4118,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 102,
+        "p99ResponseTime": 105,
+        "throughput": 48.967280063461594,
+        "totalTime": 102109,
+        "recoveryStats": {
+          "successRate": 0.10526315789473684,
+          "bestStrategy": "adaptive",
+          "history": [
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762301940023,
+              "success": false,
+              "duration": 5104,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762301934919,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 19.64,
+                "avgResponseTime": 101.92,
+                "memoryUsage": 24.66828155517578,
+                "failureCount": 100
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762301934919,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 19.64,
+                "avgResponseTime": 101.92,
+                "memoryUsage": 24.66828155517578,
+                "failureCount": 100
+              }
+            },
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762301945030,
+              "success": false,
+              "duration": 5108,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762301939921,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 20.62,
+                "avgResponseTime": 101.92,
+                "memoryUsage": 24.870018005371094,
+                "failureCount": 100
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762301939921,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 20.62,
+                "avgResponseTime": 101.92,
+                "memoryUsage": 24.870018005371094,
+                "failureCount": 100
+              }
+            },
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762301950032,
+              "success": false,
+              "duration": 5107,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762301944925,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 21.6,
+                "avgResponseTime": 101.92,
+                "memoryUsage": 25.086341857910156,
+                "failureCount": 100
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762301944925,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 21.6,
+                "avgResponseTime": 101.92,
+                "memoryUsage": 25.086341857910156,
+                "failureCount": 100
+              }
+            },
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762301955033,
+              "success": false,
+              "duration": 5101,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762301949931,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 22.58,
+                "avgResponseTime": 101.92,
+                "memoryUsage": 25.303062438964844,
+                "failureCount": 100
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762301949931,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 22.58,
+                "avgResponseTime": 101.92,
+                "memoryUsage": 25.303062438964844,
+                "failureCount": 100
+              }
+            },
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762301960035,
+              "success": false,
+              "duration": 5102,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762301954933,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 23.56,
+                "avgResponseTime": 101.92,
+                "memoryUsage": 24.734664916992188,
+                "failureCount": 100
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762301954933,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 23.56,
+                "avgResponseTime": 101.92,
+                "memoryUsage": 24.734664916992188,
+                "failureCount": 100
+              }
+            },
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762301965041,
+              "success": false,
+              "duration": 5106,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762301959935,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 29.68,
+                "avgResponseTime": 101.92,
+                "memoryUsage": 24.900558471679688,
+                "failureCount": 100
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762301959935,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 29.68,
+                "avgResponseTime": 101.92,
+                "memoryUsage": 24.900558471679688,
+                "failureCount": 100
+              }
+            },
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762301970051,
+              "success": false,
+              "duration": 5110,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762301964940,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 30.66,
+                "avgResponseTime": 101.92,
+                "memoryUsage": 25.129295349121094,
+                "failureCount": 100
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762301964940,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 30.66,
+                "avgResponseTime": 101.92,
+                "memoryUsage": 25.129295349121094,
+                "failureCount": 100
+              }
+            },
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762301975048,
+              "success": false,
+              "duration": 5101,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762301969946,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 31.64,
+                "avgResponseTime": 101.92,
+                "memoryUsage": 25.328094482421875,
+                "failureCount": 100
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762301969946,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 31.64,
+                "avgResponseTime": 101.92,
+                "memoryUsage": 25.328094482421875,
+                "failureCount": 100
+              }
+            },
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762301981228,
+              "success": true,
+              "duration": 6280,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762301974948,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 32.62,
+                "avgResponseTime": 101.92,
+                "memoryUsage": 24.759719848632812,
+                "failureCount": 100
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762301981228,
+                "hitRate": 0.9406880189798339,
+                "missRate": 0.05931198102016608,
+                "errorRate": 2,
+                "avgResponseTime": 6.0462633451957295,
+                "memoryUsage": 25.23999786376953,
+                "failureCount": 100
+              }
+            },
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762301986210,
+              "success": true,
+              "duration": 6260,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762301979949,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 33.7,
+                "avgResponseTime": 101.92,
+                "memoryUsage": 24.99089813232422,
+                "failureCount": 100
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762301986210,
+                "hitRate": 0.9850433742147772,
+                "missRate": 0.014956625785222853,
+                "errorRate": 0.5043374214777147,
+                "avgResponseTime": 0.002,
+                "memoryUsage": 25.43097686767578,
+                "failureCount": 100
+              }
+            }
+          ]
+        }
+      },
+      "selfHealingML": {
+        "cacheType": "self_healing_with_ml",
+        "scenario": "recovery_stress_test",
+        "totalRequests": 5000,
+        "successfulRequests": 4744,
+        "failedRequests": 256,
+        "cacheHits": 4301,
+        "cacheMisses": 49,
+        "hitRate": 0.988735632183908,
+        "successRate": 0.9488,
+        "avgResponseTime": 8.846,
+        "p50ResponseTime": 0,
+        "p95ResponseTime": 101,
+        "p99ResponseTime": 104,
+        "throughput": 92.15570628133295,
+        "totalTime": 54256,
+        "mlStats": {
+          "dataPoints": 52,
+          "weights": [
+            0.3,
+            0.25,
+            0.2,
+            0.15,
+            0.07,
+            0.03
+          ]
+        },
+        "predictionAccuracy": {
+          "totalPredictions": 60,
+          "correctPredictions": 44,
+          "falsePositives": 11,
+          "falseNegatives": 5,
+          "precision": 0.21428571428571427,
+          "recall": 0.375,
+          "f1Score": 0.2727272727272727,
+          "avgPredictionError": 0
+        },
+        "recoveryStats": {
+          "successRate": 0.2,
+          "bestStrategy": "adaptive",
+          "history": [
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762301997120,
+              "success": false,
+              "duration": 5107,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762301992012,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 0.6530612244897959,
+                "avgResponseTime": 102.27083333333333,
+                "memoryUsage": 25.205284118652344,
+                "failureCount": 32
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762301992012,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 0.6530612244897959,
+                "avgResponseTime": 102.27083333333333,
+                "memoryUsage": 25.205284118652344,
+                "failureCount": 32
+              }
+            },
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762302002120,
+              "success": false,
+              "duration": 5102,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762301997017,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 1.653061224489796,
+                "avgResponseTime": 102.22448979591837,
+                "memoryUsage": 25.381790161132812,
+                "failureCount": 81
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762301997017,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 1.653061224489796,
+                "avgResponseTime": 102.22448979591837,
+                "memoryUsage": 25.381790161132812,
+                "failureCount": 81
+              }
+            },
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762302007123,
+              "success": false,
+              "duration": 5102,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762302002020,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 2.673469387755102,
+                "avgResponseTime": 102.22448979591837,
+                "memoryUsage": 25.601356506347656,
+                "failureCount": 100
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762302002020,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 2.673469387755102,
+                "avgResponseTime": 102.22448979591837,
+                "memoryUsage": 25.601356506347656,
+                "failureCount": 100
+              }
+            },
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762302012132,
+              "success": false,
+              "duration": 5109,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762302007023,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 3.673469387755102,
+                "avgResponseTime": 102.22448979591837,
+                "memoryUsage": 25.07994842529297,
+                "failureCount": 100
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762302007023,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 3.673469387755102,
+                "avgResponseTime": 102.22448979591837,
+                "memoryUsage": 25.07994842529297,
+                "failureCount": 100
+              }
+            },
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762302017130,
+              "success": false,
+              "duration": 5104,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762302012025,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 9.89795918367347,
+                "avgResponseTime": 102.22448979591837,
+                "memoryUsage": 25.135948181152344,
+                "failureCount": 100
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762302012025,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 9.89795918367347,
+                "avgResponseTime": 102.22448979591837,
+                "memoryUsage": 25.135948181152344,
+                "failureCount": 100
+              }
+            },
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762302022131,
+              "success": false,
+              "duration": 5104,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762302017026,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 10.89795918367347,
+                "avgResponseTime": 102.22448979591837,
+                "memoryUsage": 25.350631713867188,
+                "failureCount": 100
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762302017026,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 10.89795918367347,
+                "avgResponseTime": 102.22448979591837,
+                "memoryUsage": 25.350631713867188,
+                "failureCount": 100
+              }
+            },
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762302027133,
+              "success": false,
+              "duration": 5102,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762302022030,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 11.877551020408163,
+                "avgResponseTime": 102.22448979591837,
+                "memoryUsage": 25.81903839111328,
+                "failureCount": 100
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762302022030,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 11.877551020408163,
+                "avgResponseTime": 102.22448979591837,
+                "memoryUsage": 25.81903839111328,
+                "failureCount": 100
+              }
+            },
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762302033484,
+              "success": true,
+              "duration": 6451,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762302027032,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 12.89795918367347,
+                "avgResponseTime": 102.22448979591837,
+                "memoryUsage": 26.03802490234375,
+                "failureCount": 100
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762302033484,
+                "hitRate": 0.9423529411764706,
+                "missRate": 0.05764705882352941,
+                "errorRate": 0.8023529411764706,
+                "avgResponseTime": 5.9,
+                "memoryUsage": 25.672393798828125,
+                "failureCount": 100
+              }
+            },
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762302037042,
+              "success": true,
+              "duration": 1,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762302037039,
+                "hitRate": 0.9791489361702128,
+                "missRate": 0.020851063829787235,
+                "errorRate": 0.2902127659574468,
+                "avgResponseTime": 0.009,
+                "memoryUsage": 25.301010131835938,
+                "failureCount": 100
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762302037042,
+                "hitRate": 0.9791489361702128,
+                "missRate": 0.020851063829787235,
+                "errorRate": 0.2902127659574468,
+                "avgResponseTime": 0.009,
+                "memoryUsage": 25.3516845703125,
+                "failureCount": 100
+              }
+            },
+            {
+              "strategy": "adaptive",
+              "timestamp": 1762302037046,
+              "success": false,
+              "duration": 5011,
+              "metricsBeforeRecovery": {
+                "timestamp": 1762302032034,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 13.89795918367347,
+                "avgResponseTime": 102.22448979591837,
+                "memoryUsage": 25.320358276367188,
+                "failureCount": 100
+              },
+              "metricsAfterRecovery": {
+                "timestamp": 1762302032034,
+                "hitRate": 0,
+                "missRate": 1,
+                "errorRate": 13.89795918367347,
+                "avgResponseTime": 102.22448979591837,
+                "memoryUsage": 25.320358276367188,
+                "failureCount": 100
+              }
+            }
+          ]
+        }
+      },
+      "improvements": {
+        "successRateImprovement": {
+          "vsBaseline": -3.8897893030794153,
+          "vsNoML": 6.05857366420747
+        },
+        "hitRateImprovement": {
+          "vsBaseline": 1.1804781195157668,
+          "vsNoML": 0.3748320191559209
+        },
+        "responseTimeImprovement": {
+          "vsBaseline": -292.04041836553796,
+          "vsNoML": 51.95472468742871
+        },
+        "throughputImprovement": {
+          "vsBaseline": -60.695591271011494,
+          "vsNoML": 88.19854025361253
+        }
+      },
+      "statisticalSignificance": {
+        "successRateSignificant": true,
+        "hitRateSignificant": true,
+        "responseTimeSignificant": true,
+        "confidenceLevel": 0.95
+      }
+    }
+  },
+  "summary": {
+    "bestPerformer": "self_healing_with_ml",
+    "overallImprovements": {
+      "avgSuccessRateImprovement": -0.5981219435670455,
+      "avgHitRateImprovement": 0.12531883369023214,
+      "avgResponseTimeImprovement": -44.35709390241111,
+      "avgThroughputImprovement": -10.459942986961405
+    },
+    "mlEffectiveness": {
+      "avgPrecision": 0.030612244897959183,
+      "avgRecall": 0.05357142857142857,
+      "avgF1Score": 0.03896103896103896,
+      "totalPredictions": 381
+    }
+  }
+}
