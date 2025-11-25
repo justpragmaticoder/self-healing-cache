@@ -1,9 +1,9 @@
 import { Injectable, Inject, OnModuleInit, OnModuleDestroy, Logger } from '@nestjs/common';
-import { SelfHealingCache } from '../../core/SelfHealingCache';
-import { RedisAdapter } from '../../adapters/RedisAdapter';
-import { InMemoryAdapter } from '../../adapters/InMemoryAdapter';
-import { MySQLMetricsAdapter } from '../../adapters/MySQLMetricsAdapter';
-import { StorageAdapter } from '../../adapters/StorageAdapter';
+import { SelfHealingCache } from '../core/SelfHealingCache';
+import { RedisAdapter } from '../adapters/RedisAdapter';
+import { InMemoryAdapter } from '../adapters/InMemoryAdapter';
+import { MySQLMetricsAdapter } from '../adapters/MySQLMetricsAdapter';
+import { StorageAdapter } from '../adapters/StorageAdapter';
 import { SELF_HEALING_CACHE_OPTIONS } from './constants';
 import { SelfHealingCacheModuleOptions } from './self-healing-cache.module';
 

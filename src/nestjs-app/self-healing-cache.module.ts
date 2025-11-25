@@ -2,7 +2,7 @@ import { Module, Global, DynamicModule } from '@nestjs/common';
 import { SelfHealingCacheService } from './self-healing-cache.service';
 import { ExperimentRunnerService } from './experiments/experiment-runner.service';
 import { SELF_HEALING_CACHE_OPTIONS } from './constants';
-import { CacheConfig } from '../../types';
+import { CacheConfig } from '../types';
 
 export interface SelfHealingCacheModuleOptions extends Partial<CacheConfig> {
   redis?: {

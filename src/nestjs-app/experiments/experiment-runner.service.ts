@@ -1,45 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { SelfHealingCache } from '../../../core/SelfHealingCache';
-import { SimpleCache } from '../../../core/SimpleCache';
+import { SelfHealingCache } from '../../core/SelfHealingCache';
+import { SimpleCache } from '../../core/SimpleCache';
 import * as fs from 'fs';
 import * as path from 'path';
 
-// Traditional cache implementation
-class TraditionalCache<T> {
-  private storage = new Map<string, { value: T; timestamp: number; ttl: number }>();
-  private hits = 0;
-  private misses = 0;
-
-  set(key: string, value: T, ttl: number = 300000): void {
-    this.storage.set(key, { value, timestamp: Date.now(), ttl });
-  }
-
-  get(key: string): T | undefined {
-    const entry = this.storage.get(key);
-    if (!entry) {
-      this.misses++;
-      return undefined;
-    }
-    if (Date.now() - entry.timestamp > entry.ttl) {
-      this.storage.delete(key);
-      this.misses++;
-      return undefined;
-    }
-    this.hits++;
-    return entry.value;
-  }
-
-  getStats() {
-    const total = this.hits + this.misses;
-    return { hits: this.hits, misses: this.misses, hitRate: total > 0 ? this.hits / total : 0 };
-  }
-
-  clear(): void {
-    this.storage.clear();
-    this.hits = 0;
-    this.misses = 0;
-  }
-}
 
 // Simulated data source
 class DataSource {
@@ -273,7 +237,7 @@ export class ExperimentRunnerService {
     // Use SimpleCache for baseline - NO retry, NO recovery, NO self-healing
     const cache = new SimpleCache();
     const dataSource = new DataSource();
-    cache.setDataRefreshFunction((key) => dataSource.fetch(key));
+    cache.setDataRefreshFunction((key: string) => dataSource.fetch(key));
 
     const responseTimes: number[] = [];
     const startTime = Date.now();

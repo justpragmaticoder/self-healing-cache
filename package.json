@@ -6,7 +6,6 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "benchmark": "ts-node src/benchmark/comparison.ts",
     "test": "jest",
     "start": "node dist/nestjs-app/main.js",
     "start:dev": "ts-node src/nestjs-app/main.ts",

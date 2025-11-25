@@ -57,3 +57,25 @@ export interface RecoveryAction {
   metricsBeforeRecovery: HealthMetrics;
   metricsAfterRecovery: HealthMetrics;
 }
+
+export interface ExperimentMetrics {
+  experimentName: string;
+  startTime: number;
+  endTime: number;
+  totalRequests: number;
+  successfulRequests: number;
+  failedRequests: number;
+  cacheHits: number;
+  cacheMisses: number;
+  avgResponseTime: number;
+  p50ResponseTime: number;
+  p95ResponseTime: number;
+  p99ResponseTime: number;
+  healthMetricsHistory: HealthMetrics[];
+  recoveryActions: RecoveryAction[];
+  downtimeSeconds: number;
+  mtbf: number; // Mean Time Between Failures
+  mttr: number; // Mean Time To Recovery
+  availability: number;
+}
+

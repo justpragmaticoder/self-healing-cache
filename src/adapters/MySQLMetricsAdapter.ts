@@ -1,6 +1,5 @@
 import mysql from 'mysql2/promise';
-import { HealthMetrics, RecoveryAction, CacheState } from '../types';
-import { ExperimentMetrics } from '../metrics/MetricsCollector';
+import { HealthMetrics, RecoveryAction, CacheState, ExperimentMetrics } from '../types';
 
 export class MySQLMetricsAdapter {
   private pool: mysql.Pool;

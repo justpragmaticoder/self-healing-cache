@@ -9,8 +9,6 @@ export { FailurePredictor } from './ml/FailurePredictor';
 // Recovery components
 export { RecoveryManager, DataRefreshFunction } from './recovery/RecoveryManager';
 
-// Metrics
-export { MetricsCollector, ExperimentMetrics } from './metrics/MetricsCollector';
 
 // Types
 export {
@@ -20,5 +18,6 @@ export {
   RecoveryStrategy,
   CacheState,
   CacheConfig,
-  RecoveryAction
+  RecoveryAction,
+  ExperimentMetrics
 } from './types';
