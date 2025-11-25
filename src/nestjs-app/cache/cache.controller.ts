@@ -1,6 +1,5 @@
 import { Controller, Get, Post, Delete, Param, Query } from '@nestjs/common';
-import { SelfHealingCacheService } from '../self-healing-cache.service';
-import { ExperimentRunnerService } from '../experiments/experiment-runner.service';
+import { SelfHealingCacheService, ExperimentRunnerService } from '../../libs/self-healing-cache';
 
 @Controller('cache')
 export class CacheController {

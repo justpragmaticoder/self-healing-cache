@@ -1,6 +1,6 @@
 import { Controller, Get, Param, ParseIntPipe, Logger, OnModuleInit } from '@nestjs/common';
 import { UsersService, User } from './users.service';
-import { SelfHealingCacheService } from '../self-healing-cache.service';
+import { SelfHealingCacheService } from '../../libs/self-healing-cache';
 
 @Controller('users')
 export class UsersController implements OnModuleInit {

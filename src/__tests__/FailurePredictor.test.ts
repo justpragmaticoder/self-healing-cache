@@ -1,5 +1,5 @@
-import { FailurePredictor } from '../ml/FailurePredictor';
-import { RecoveryStrategy } from '../types';
+import { FailurePredictor } from '../libs/self-healing-cache/ml/FailurePredictor';
+import { RecoveryStrategy } from '../libs/self-healing-cache/types';
 
 describe('FailurePredictor', () => {
   let predictor: FailurePredictor;

@@ -2,8 +2,6 @@
   "name": "self-healing-cache",
   "version": "1.0.0",
   "description": "ML-powered self-healing cache with adaptive recovery strategies",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "jest",

@@ -1,5 +1,5 @@
-import { SelfHealingCache } from '../core/SelfHealingCache';
-import { CacheState } from '../types';
+import { SelfHealingCache } from '../libs/self-healing-cache/core/SelfHealingCache';
+import { CacheState } from '../libs/self-healing-cache/types';
 
 describe('SelfHealingCache', () => {
   let cache: SelfHealingCache;
