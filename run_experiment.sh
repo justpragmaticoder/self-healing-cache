@@ -174,11 +174,18 @@ else
 fi
 echo ""
 
-# Step 6: Export additional data
-echo -e "${BLUE}Step 6: Exporting additional data...${NC}"
-curl -s http://localhost:3000/api/cache/stats > experiment_results/cache_statistics.json
-curl -s http://localhost:3000/api/ml/training-data?limit=1000 > experiment_results/ml_training_data.json
-echo -e "${GREEN}✓ Additional data exported to experiment_results/${NC}"
+# Step 6: Files already exported by experiment runner
+echo -e "${BLUE}Step 6: Verifying exported data...${NC}"
+if [ -f "experiment_results/cache_statistics.json" ]; then
+    echo -e "${GREEN}✓ Cache statistics exported${NC}"
+else
+    echo "⚠️  Cache statistics file not found"
+fi
+if [ -f "experiment_results/ml_training_data.json" ]; then
+    echo -e "${GREEN}✓ ML training data exported${NC}"
+else
+    echo "⚠️  ML training data file not found"
+fi
 echo ""
 
 # Step 7: Generate charts

@@ -173,6 +173,16 @@ export class ExperimentRunnerService {
       },
     };
 
+    // Collect all ML training data and cache statistics
+    const allMLData: any[] = [];
+    let aggregatedCacheStats = {
+      totalHits: 0,
+      totalMisses: 0,
+      totalRequests: 0,
+      totalErrors: 0,
+      scenarios: {} as any,
+    };
+
     for (const scenario of scenarios) {
       this.logger.log(`Running scenario: ${scenario}`);
 
@@ -184,6 +194,48 @@ export class ExperimentRunnerService {
 
       // Test 3: Self-Healing with ML
       const selfHealingMLResult = await this.runSelfHealingExperiment(scenario, true);
+
+      // Collect cache statistics for this scenario
+      aggregatedCacheStats.scenarios[scenario] = {
+        baseline: {
+          hits: baselineResult.cacheHits,
+          misses: baselineResult.cacheMisses,
+          hitRate: baselineResult.hitRate,
+          errors: baselineResult.failedRequests,
+        },
+        selfHealing: {
+          hits: selfHealingResult.cacheHits,
+          misses: selfHealingResult.cacheMisses,
+          hitRate: selfHealingResult.hitRate,
+          errors: selfHealingResult.failedRequests,
+        },
+        selfHealingML: {
+          hits: selfHealingMLResult.cacheHits,
+          misses: selfHealingMLResult.cacheMisses,
+          hitRate: selfHealingMLResult.hitRate,
+          errors: selfHealingMLResult.failedRequests,
+          mlStats: selfHealingMLResult.mlStats,
+          predictionAccuracy: selfHealingMLResult.predictionAccuracy,
+        },
+      };
+
+      // Aggregate totals
+      aggregatedCacheStats.totalHits += baselineResult.cacheHits + selfHealingResult.cacheHits + selfHealingMLResult.cacheHits;
+      aggregatedCacheStats.totalMisses += baselineResult.cacheMisses + selfHealingResult.cacheMisses + selfHealingMLResult.cacheMisses;
+      aggregatedCacheStats.totalRequests += baselineResult.totalRequests + selfHealingResult.totalRequests + selfHealingMLResult.totalRequests;
+      aggregatedCacheStats.totalErrors += baselineResult.failedRequests + selfHealingResult.failedRequests + selfHealingMLResult.failedRequests;
+
+      // Collect ML training data if available
+      if (selfHealingMLResult.mlStats) {
+        allMLData.push({
+          scenario,
+          experimentId,
+          timestamp: Date.now(),
+          mlStats: selfHealingMLResult.mlStats,
+          predictionAccuracy: selfHealingMLResult.predictionAccuracy,
+          recoveryStats: selfHealingMLResult.recoveryStats,
+        });
+      }
 
       // Calculate improvements
       const improvements = this.calculateImprovements(
@@ -224,11 +276,31 @@ export class ExperimentRunnerService {
     // Calculate summary
     report.summary = this.calculateSummary(report.scenarios);
 
-    // Save to file
+    // Save main experiment report
     const filename = path.join(this.resultsDir, `${experimentId}.json`);
     fs.writeFileSync(filename, JSON.stringify(report, null, 2));
-
     this.logger.log(`Experiment complete. Results saved to ${filename}`);
+
+    // Save ML training data to file
+    const mlDataFile = path.join(this.resultsDir, 'ml_training_data.json');
+    fs.writeFileSync(mlDataFile, JSON.stringify({
+      experimentId,
+      timestamp: Date.now(),
+      data: allMLData,
+      total: allMLData.length,
+    }, null, 2));
+    this.logger.log(`ML training data saved to ${mlDataFile}`);
+
+    // Save cache statistics to file
+    const cacheStatsFile = path.join(this.resultsDir, 'cache_statistics.json');
+    fs.writeFileSync(cacheStatsFile, JSON.stringify({
+      experimentId,
+      timestamp: Date.now(),
+      aggregated: aggregatedCacheStats,
+      overallHitRate: aggregatedCacheStats.totalHits / (aggregatedCacheStats.totalHits + aggregatedCacheStats.totalMisses),
+      overallErrorRate: aggregatedCacheStats.totalErrors / aggregatedCacheStats.totalRequests,
+    }, null, 2));
+    this.logger.log(`Cache statistics saved to ${cacheStatsFile}`);
 
     return report;
   }
