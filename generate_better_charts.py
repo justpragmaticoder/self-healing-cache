@@ -86,10 +86,10 @@ def create_success_rate_zoomed(experiment_file):
         sh_sr.append(scenario['selfHealing']['successRate'] * 100)
         ml_sr.append(scenario['selfHealingML']['successRate'] * 100)
 
-    x = np.arange(len(scenario_names))
-    width = 0.25
+    x = np.arange(len(scenario_names)) * 1.5  # Increased spacing from 1.2 to 1.5
+    width = 0.28  # Slightly wider bars
 
-    fig, ax = plt.subplots(figsize=(14, 8))
+    fig, ax = plt.subplots(figsize=(18, 8))  # Even wider
 
     bars1 = ax.bar(x - width, baseline_sr, width, label='Baseline',
                    color='#FF6B6B', alpha=0.8, edgecolor='black', linewidth=1.2)
@@ -98,13 +98,14 @@ def create_success_rate_zoomed(experiment_file):
     bars3 = ax.bar(x + width, ml_sr, width, label='Self-Healing (ML)',
                    color='#4ECDC4', alpha=0.8, edgecolor='black', linewidth=1.2)
 
-    # Add value labels
+    # Add value labels with rotation to prevent overlap
     for bars in [bars1, bars2, bars3]:
         for bar in bars:
             height = bar.get_height()
-            ax.text(bar.get_x() + bar.get_width()/2., height + 0.02,
+            ax.text(bar.get_x() + bar.get_width()/2., height + 0.03,
                    f'{height:.2f}%',
-                   ha='center', va='bottom', fontsize=8, fontweight='bold')
+                   ha='center', va='bottom', fontsize=7, fontweight='bold',
+                   rotation=45)  # Rotate labels to prevent overlap
 
     ax.set_xlabel('Scenarios', fontsize=12, fontweight='bold')
     ax.set_ylabel('Success Rate (%)', fontsize=12, fontweight='bold')
@@ -121,7 +122,6 @@ def create_success_rate_zoomed(experiment_file):
 
     plt.tight_layout()
     plt.savefig('charts/success_rate_zoomed.png', bbox_inches='tight', dpi=300)
-    print('✓ Created: charts/success_rate_zoomed.png')
     plt.close()
 
 def create_combined_metrics_chart(experiment_file):
@@ -209,11 +209,10 @@ def create_combined_metrics_chart(experiment_file):
     plt.suptitle('Comprehensive Performance Comparison', fontsize=16, fontweight='bold', y=0.995)
     plt.tight_layout()
     plt.savefig('charts/comprehensive_comparison.png', bbox_inches='tight', dpi=300)
-    print('✓ Created: charts/comprehensive_comparison.png')
     plt.close()
 
 def main():
-    print("\n🎨 Generating IMPROVED charts with better visibility...\n")
+    print("📊 Generating improved charts...")
 
     results_dir = Path('experiment_results')
     experiment_files = list(results_dir.glob('experiment_*.json'))
@@ -222,18 +221,14 @@ def main():
         return
 
     latest_experiment = max(experiment_files, key=lambda p: p.stat().st_mtime)
-    print(f"📊 Using experiment: {latest_experiment.name}\n")
+    print(f"Using: {latest_experiment.name}")
 
     create_error_reduction_chart(latest_experiment)
     create_success_rate_zoomed(latest_experiment)
     create_combined_metrics_chart(latest_experiment)
 
-    print("\n✅ Improved charts generated!")
-    print("\n📁 New charts:")
-    print("  1. error_reduction_by_scenario.png - Shows CLEAR hierarchy in errors")
-    print("  2. success_rate_zoomed.png - Zoomed scale to show small differences")
-    print("  3. comprehensive_comparison.png - 4 metrics with proper scales")
-    print("\n💡 These charts show differences much better!\n")
+    print("✅ Charts generated successfully!")
+
 
 if __name__ == '__main__':
     main()

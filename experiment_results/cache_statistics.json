@@ -1,13 +1,177 @@
 {
-  "experimentId": "experiment_1764275343323",
-  "timestamp": 1764275458905,
+  "experimentId": "experiment_1764277927292",
+  "timestamp": 1764278042749,
   "aggregated": {
-    "totalHits": 116580,
-    "totalMisses": 3420,
+    "totalHits": 116593,
+    "totalMisses": 3407,
     "totalRequests": 120000,
-    "totalErrors": 180,
+    "totalErrors": 167,
     "scenarios": {
       "normal": {
+        "baseline": {
+          "hits": 4893,
+          "misses": 107,
+          "hitRate": 0.9786,
+          "errors": 7
+        },
+        "selfHealing": {
+          "hits": 4899,
+          "misses": 101,
+          "hitRate": 0.9798,
+          "errors": 1
+        },
+        "selfHealingML": {
+          "hits": 4898,
+          "misses": 102,
+          "hitRate": 0.9796,
+          "errors": 2,
+          "mlStats": {
+            "dataPoints": 2,
+            "weights": [
+              0.3,
+              0.25,
+              0.2,
+              0.15,
+              0.07,
+              0.03
+            ]
+          },
+          "predictionAccuracy": {
+            "totalPredictions": 50,
+            "correctPredictions": 50,
+            "falsePositives": 0,
+            "falseNegatives": 0,
+            "precision": 0,
+            "recall": 0,
+            "f1Score": 0,
+            "avgPredictionError": 0
+          }
+        }
+      },
+      "high_failure": {
+        "baseline": {
+          "hits": 2927,
+          "misses": 73,
+          "hitRate": 0.9756666666666667,
+          "errors": 23
+        },
+        "selfHealing": {
+          "hits": 2943,
+          "misses": 57,
+          "hitRate": 0.981,
+          "errors": 7
+        },
+        "selfHealingML": {
+          "hits": 2946,
+          "misses": 54,
+          "hitRate": 0.982,
+          "errors": 4,
+          "mlStats": {
+            "dataPoints": 1,
+            "weights": [
+              0.3,
+              0.25,
+              0.2,
+              0.15,
+              0.07,
+              0.03
+            ]
+          },
+          "predictionAccuracy": {
+            "totalPredictions": 30,
+            "correctPredictions": 30,
+            "falsePositives": 0,
+            "falseNegatives": 0,
+            "precision": 0,
+            "recall": 0,
+            "f1Score": 0,
+            "avgPredictionError": 0
+          }
+        }
+      },
+      "burst_traffic": {
+        "baseline": {
+          "hits": 3899,
+          "misses": 101,
+          "hitRate": 0.97475,
+          "errors": 1
+        },
+        "selfHealing": {
+          "hits": 3900,
+          "misses": 100,
+          "hitRate": 0.975,
+          "errors": 0
+        },
+        "selfHealingML": {
+          "hits": 3900,
+          "misses": 100,
+          "hitRate": 0.975,
+          "errors": 0,
+          "mlStats": {
+            "dataPoints": 1,
+            "weights": [
+              0.3,
+              0.25,
+              0.2,
+              0.15,
+              0.07,
+              0.03
+            ]
+          },
+          "predictionAccuracy": {
+            "totalPredictions": 40,
+            "correctPredictions": 40,
+            "falsePositives": 0,
+            "falseNegatives": 0,
+            "precision": 0,
+            "recall": 0,
+            "f1Score": 0,
+            "avgPredictionError": 0
+          }
+        }
+      },
+      "cascading_failure": {
+        "baseline": {
+          "hits": 4912,
+          "misses": 88,
+          "hitRate": 0.9824,
+          "errors": 8
+        },
+        "selfHealing": {
+          "hits": 4918,
+          "misses": 82,
+          "hitRate": 0.9836,
+          "errors": 2
+        },
+        "selfHealingML": {
+          "hits": 4920,
+          "misses": 80,
+          "hitRate": 0.984,
+          "errors": 0,
+          "mlStats": {
+            "dataPoints": 1,
+            "weights": [
+              0.3,
+              0.25,
+              0.2,
+              0.15,
+              0.07,
+              0.03
+            ]
+          },
+          "predictionAccuracy": {
+            "totalPredictions": 50,
+            "correctPredictions": 50,
+            "falsePositives": 0,
+            "falseNegatives": 0,
+            "precision": 0,
+            "recall": 0,
+            "f1Score": 0,
+            "avgPredictionError": 0
+          }
+        }
+      },
+      "gradual_degradation": {
         "baseline": {
           "hits": 4895,
           "misses": 105,
@@ -48,204 +212,40 @@
           }
         }
       },
-      "high_failure": {
-        "baseline": {
-          "hits": 2930,
-          "misses": 70,
-          "hitRate": 0.9766666666666667,
-          "errors": 20
-        },
-        "selfHealing": {
-          "hits": 2945,
-          "misses": 55,
-          "hitRate": 0.9816666666666667,
-          "errors": 5
-        },
-        "selfHealingML": {
-          "hits": 2945,
-          "misses": 55,
-          "hitRate": 0.9816666666666667,
-          "errors": 5,
-          "mlStats": {
-            "dataPoints": 1,
-            "weights": [
-              0.3,
-              0.25,
-              0.2,
-              0.15,
-              0.07,
-              0.03
-            ]
-          },
-          "predictionAccuracy": {
-            "totalPredictions": 30,
-            "correctPredictions": 30,
-            "falsePositives": 0,
-            "falseNegatives": 0,
-            "precision": 0,
-            "recall": 0,
-            "f1Score": 0,
-            "avgPredictionError": 0
-          }
-        }
-      },
-      "burst_traffic": {
-        "baseline": {
-          "hits": 3890,
-          "misses": 110,
-          "hitRate": 0.9725,
-          "errors": 10
-        },
-        "selfHealing": {
-          "hits": 3899,
-          "misses": 101,
-          "hitRate": 0.97475,
-          "errors": 1
-        },
-        "selfHealingML": {
-          "hits": 3900,
-          "misses": 100,
-          "hitRate": 0.975,
-          "errors": 0,
-          "mlStats": {
-            "dataPoints": 1,
-            "weights": [
-              0.3,
-              0.25,
-              0.2,
-              0.15,
-              0.07,
-              0.03
-            ]
-          },
-          "predictionAccuracy": {
-            "totalPredictions": 40,
-            "correctPredictions": 40,
-            "falsePositives": 0,
-            "falseNegatives": 0,
-            "precision": 0,
-            "recall": 0,
-            "f1Score": 0,
-            "avgPredictionError": 0
-          }
-        }
-      },
-      "cascading_failure": {
-        "baseline": {
-          "hits": 4917,
-          "misses": 83,
-          "hitRate": 0.9834,
-          "errors": 3
-        },
-        "selfHealing": {
-          "hits": 4919,
-          "misses": 81,
-          "hitRate": 0.9838,
-          "errors": 1
-        },
-        "selfHealingML": {
-          "hits": 4919,
-          "misses": 81,
-          "hitRate": 0.9838,
-          "errors": 1,
-          "mlStats": {
-            "dataPoints": 1,
-            "weights": [
-              0.3,
-              0.25,
-              0.2,
-              0.15,
-              0.07,
-              0.03
-            ]
-          },
-          "predictionAccuracy": {
-            "totalPredictions": 50,
-            "correctPredictions": 50,
-            "falsePositives": 0,
-            "falseNegatives": 0,
-            "precision": 0,
-            "recall": 0,
-            "f1Score": 0,
-            "avgPredictionError": 0
-          }
-        }
-      },
-      "gradual_degradation": {
-        "baseline": {
-          "hits": 4885,
-          "misses": 115,
-          "hitRate": 0.977,
-          "errors": 15
-        },
-        "selfHealing": {
-          "hits": 4900,
-          "misses": 100,
-          "hitRate": 0.98,
-          "errors": 0
-        },
-        "selfHealingML": {
-          "hits": 4899,
-          "misses": 101,
-          "hitRate": 0.9798,
-          "errors": 1,
-          "mlStats": {
-            "dataPoints": 2,
-            "weights": [
-              0.3,
-              0.25,
-              0.2,
-              0.15,
-              0.07,
-              0.03
-            ]
-          },
-          "predictionAccuracy": {
-            "totalPredictions": 50,
-            "correctPredictions": 50,
-            "falsePositives": 0,
-            "falseNegatives": 0,
-            "precision": 0,
-            "recall": 0,
-            "f1Score": 0,
-            "avgPredictionError": 0
-          }
-        }
-      },
       "memory_pressure": {
         "baseline": {
-          "hits": 9438,
-          "misses": 562,
-          "hitRate": 0.9438,
-          "errors": 62
+          "hits": 9436,
+          "misses": 564,
+          "hitRate": 0.9436,
+          "errors": 64
         },
         "selfHealing": {
-          "hits": 9497,
-          "misses": 503,
-          "hitRate": 0.9497,
-          "errors": 3
+          "hits": 9496,
+          "misses": 504,
+          "hitRate": 0.9496,
+          "errors": 4
         },
         "selfHealingML": {
-          "hits": 9495,
-          "misses": 505,
-          "hitRate": 0.9495,
-          "errors": 5,
+          "hits": 9496,
+          "misses": 504,
+          "hitRate": 0.9496,
+          "errors": 4,
           "mlStats": {
             "dataPoints": 11,
             "weights": [
-              0.2940356403850098,
-              0.24513994474202255,
-              0.19382644413144332,
-              0.16807985777604476,
-              0.06863133811741005,
-              0.030286774848069405
+              0.2869169843623947,
+              0.23940267365835632,
+              0.1851539240216131,
+              0.19037927270297048,
+              0.0669983726523626,
+              0.031148772602302793
             ]
           },
           "predictionAccuracy": {
             "totalPredictions": 101,
-            "correctPredictions": 99,
+            "correctPredictions": 98,
             "falsePositives": 0,
-            "falseNegatives": 2,
+            "falseNegatives": 3,
             "precision": 0,
             "recall": 0,
             "f1Score": 0,
@@ -255,22 +255,22 @@
       },
       "recovery_stress_test": {
         "baseline": {
-          "hits": 4921,
-          "misses": 79,
-          "hitRate": 0.9842,
-          "errors": 29
+          "hits": 4929,
+          "misses": 71,
+          "hitRate": 0.9858,
+          "errors": 21
         },
         "selfHealing": {
-          "hits": 4944,
-          "misses": 56,
-          "hitRate": 0.9888,
-          "errors": 6
-        },
-        "selfHealingML": {
           "hits": 4943,
           "misses": 57,
           "hitRate": 0.9886,
-          "errors": 7,
+          "errors": 7
+        },
+        "selfHealingML": {
+          "hits": 4947,
+          "misses": 53,
+          "hitRate": 0.9894,
+          "errors": 3,
           "mlStats": {
             "dataPoints": 2,
             "weights": [
@@ -296,10 +296,10 @@
       },
       "cache_corruption": {
         "baseline": {
-          "hits": 2899,
-          "misses": 101,
-          "hitRate": 0.9663333333333334,
-          "errors": 1
+          "hits": 2897,
+          "misses": 103,
+          "hitRate": 0.9656666666666667,
+          "errors": 3
         },
         "selfHealing": {
           "hits": 2900,
@@ -308,10 +308,10 @@
           "errors": 0
         },
         "selfHealingML": {
-          "hits": 2900,
-          "misses": 100,
-          "hitRate": 0.9666666666666667,
-          "errors": 0,
+          "hits": 2899,
+          "misses": 101,
+          "hitRate": 0.9663333333333334,
+          "errors": 1,
           "mlStats": {
             "dataPoints": 2,
             "weights": [
@@ -337,6 +337,6 @@
       }
     }
   },
-  "overallHitRate": 0.9715,
-  "overallErrorRate": 0.0015
+  "overallHitRate": 0.9716083333333333,
+  "overallErrorRate": 0.0013916666666666667
 }

@@ -1,11 +1,11 @@
 {
-  "experimentId": "experiment_1764275343323",
-  "timestamp": 1764275458905,
+  "experimentId": "experiment_1764277927292",
+  "timestamp": 1764278042749,
   "data": [
     {
       "scenario": "normal",
-      "experimentId": "experiment_1764275343323",
-      "timestamp": 1764275346984,
+      "experimentId": "experiment_1764277927292",
+      "timestamp": 1764277931042,
       "mlStats": {
         "dataPoints": 2,
         "weights": [
@@ -35,8 +35,8 @@
     },
     {
       "scenario": "high_failure",
-      "experimentId": "experiment_1764275343323",
-      "timestamp": 1764275358551,
+      "experimentId": "experiment_1764277927292",
+      "timestamp": 1764277942731,
       "mlStats": {
         "dataPoints": 1,
         "weights": [
@@ -66,8 +66,8 @@
     },
     {
       "scenario": "burst_traffic",
-      "experimentId": "experiment_1764275343323",
-      "timestamp": 1764275378073,
+      "experimentId": "experiment_1764277927292",
+      "timestamp": 1764277961930,
       "mlStats": {
         "dataPoints": 1,
         "weights": [
@@ -97,8 +97,8 @@
     },
     {
       "scenario": "cascading_failure",
-      "experimentId": "experiment_1764275343323",
-      "timestamp": 1764275383874,
+      "experimentId": "experiment_1764277927292",
+      "timestamp": 1764277968135,
       "mlStats": {
         "dataPoints": 1,
         "weights": [
@@ -128,8 +128,8 @@
     },
     {
       "scenario": "gradual_degradation",
-      "experimentId": "experiment_1764275343323",
-      "timestamp": 1764275387979,
+      "experimentId": "experiment_1764277927292",
+      "timestamp": 1764277971856,
       "mlStats": {
         "dataPoints": 2,
         "weights": [
@@ -159,24 +159,24 @@
     },
     {
       "scenario": "memory_pressure",
-      "experimentId": "experiment_1764275343323",
-      "timestamp": 1764275416688,
+      "experimentId": "experiment_1764277927292",
+      "timestamp": 1764278000692,
       "mlStats": {
         "dataPoints": 11,
         "weights": [
-          0.2940356403850098,
-          0.24513994474202255,
-          0.19382644413144332,
-          0.16807985777604476,
-          0.06863133811741005,
-          0.030286774848069405
+          0.2869169843623947,
+          0.23940267365835632,
+          0.1851539240216131,
+          0.19037927270297048,
+          0.0669983726523626,
+          0.031148772602302793
         ]
       },
       "predictionAccuracy": {
         "totalPredictions": 101,
-        "correctPredictions": 99,
+        "correctPredictions": 98,
         "falsePositives": 0,
-        "falseNegatives": 2,
+        "falseNegatives": 3,
         "precision": 0,
         "recall": 0,
         "f1Score": 0,
@@ -188,26 +188,26 @@
         "history": [
           {
             "strategy": "adaptive",
-            "timestamp": 1764275411992,
+            "timestamp": 1764277996013,
             "success": true,
-            "duration": 211,
+            "duration": 220,
             "metricsBeforeRecovery": {
-              "timestamp": 1764275411780,
+              "timestamp": 1764277995792,
               "hitRate": 0,
               "missRate": 1,
-              "errorRate": 0.012,
-              "avgResponseTime": 20.42063492063492,
-              "memoryUsage": 215.31188201904297,
-              "failureCount": 3
+              "errorRate": 0.01652892561983471,
+              "avgResponseTime": 21.220408163265308,
+              "memoryUsage": 215.0858917236328,
+              "failureCount": 4
             },
             "metricsAfterRecovery": {
-              "timestamp": 1764275411992,
+              "timestamp": 1764277996013,
               "hitRate": 0,
               "missRate": 1,
-              "errorRate": 0.011363636363636364,
-              "avgResponseTime": 20.18796992481203,
-              "memoryUsage": 215.4392547607422,
-              "failureCount": 3
+              "errorRate": 0.01593625498007968,
+              "avgResponseTime": 21.19685039370079,
+              "memoryUsage": 215.19385528564453,
+              "failureCount": 4
             }
           }
         ]
@@ -215,8 +215,8 @@
     },
     {
       "scenario": "recovery_stress_test",
-      "experimentId": "experiment_1764275343323",
-      "timestamp": 1764275455329,
+      "experimentId": "experiment_1764277927292",
+      "timestamp": 1764278039061,
       "mlStats": {
         "dataPoints": 2,
         "weights": [
@@ -244,26 +244,26 @@
         "history": [
           {
             "strategy": "adaptive",
-            "timestamp": 1764275447995,
+            "timestamp": 1764278031777,
             "success": true,
-            "duration": 560,
+            "duration": 558,
             "metricsBeforeRecovery": {
-              "timestamp": 1764275447434,
+              "timestamp": 1764278031218,
               "hitRate": 0,
               "missRate": 1,
-              "errorRate": 0.16216216216216217,
-              "avgResponseTime": 150.61904761904762,
-              "memoryUsage": 215.50148010253906,
-              "failureCount": 6
+              "errorRate": 0.06060606060606061,
+              "avgResponseTime": 155.02941176470588,
+              "memoryUsage": 215.61754608154297,
+              "failureCount": 2
             },
             "metricsAfterRecovery": {
-              "timestamp": 1764275447995,
+              "timestamp": 1764278031777,
               "hitRate": 0,
               "missRate": 1,
-              "errorRate": 0.15,
-              "avgResponseTime": 152.73333333333332,
-              "memoryUsage": 215.58409881591797,
-              "failureCount": 6
+              "errorRate": 0.05405405405405406,
+              "avgResponseTime": 155.71052631578948,
+              "memoryUsage": 215.70562744140625,
+              "failureCount": 2
             }
           }
         ]
@@ -271,8 +271,8 @@
     },
     {
       "scenario": "cache_corruption",
-      "experimentId": "experiment_1764275343323",
-      "timestamp": 1764275458901,
+      "experimentId": "experiment_1764277927292",
+      "timestamp": 1764278042742,
       "mlStats": {
         "dataPoints": 2,
         "weights": [

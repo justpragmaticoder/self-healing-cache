@@ -97,7 +97,7 @@ echo "  📊 Normal Operation (1000 requests, 5% failure rate)"
 echo "  ⚠️  High Failure (500 requests, 30% failure rate)"
 echo "  🔥 Burst Traffic (1000 requests, alternating conditions)"
 echo ""
-echo "  ⏳ This will take approximately 6-8 minutes..."
+echo "  ⏳ This will take approximately 5 minutes..."
 echo ""
 
 COMPARISON_RESPONSE=$(curl -s -X POST http://localhost:3000/api/experiments/run-comparison)
