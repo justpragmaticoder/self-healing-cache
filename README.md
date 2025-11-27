@@ -324,30 +324,35 @@ Five dynamic strategies automatically selected based on system state:
 ```
 self-healing-cache/
 ├── src/
-│   ├── core/                      # Core cache components
-│   │   ├── SelfHealingCache.ts   # Main cache with ML + recovery
-│   │   ├── SimpleCache.ts        # Baseline cache for comparison
-│   │   ├── CacheStorage.ts       # Storage with TTL and LRU
-│   │   └── HealthMonitor.ts      # Metrics monitoring
-│   ├── ml/
-│   │   └── FailurePredictor.ts   # ML model (6 features, online learning)
-│   ├── recovery/
-│   │   └── RecoveryManager.ts    # 5 recovery strategies
-│   ├── adapters/
-│   │   ├── InMemoryAdapter.ts    # In-memory storage
-│   │   ├── RedisAdapter.ts       # Redis integration
-│   │   └── MySQLMetricsAdapter.ts # Metrics persistence
-│   ├── metrics/
-│   │   └── MetricsCollector.ts   # Metrics collection & export
-│   ├── nestjs-app/               # NestJS application
+│   ├── libs/
+│   │   └── self-healing-cache/   # ⭐ Main reusable module
+│   │       ├── core/             # Core cache components
+│   │       │   ├── SelfHealingCache.ts   # Main cache with ML + recovery
+│   │       │   ├── SimpleCache.ts        # Baseline cache for comparison
+│   │       │   ├── CacheStorage.ts       # Storage with TTL and LRU
+│   │       │   └── HealthMonitor.ts      # Metrics monitoring
+│   │       ├── ml/
+│   │       │   └── FailurePredictor.ts   # ML model (6 features, online learning)
+│   │       ├── recovery/
+│   │       │   └── RecoveryManager.ts    # 5 recovery strategies
+│   │       ├── adapters/
+│   │       │   ├── InMemoryAdapter.ts    # In-memory storage
+│   │       │   ├── RedisAdapter.ts       # Redis integration
+│   │       │   └── MySQLMetricsAdapter.ts # Metrics persistence
+│   │       ├── types/
+│   │       │   └── index.ts              # TypeScript definitions
+│   │       ├── experiments/              # Experiment runner
+│   │       ├── index.ts                  # Main exports
+│   │       ├── self-healing-cache.module.ts
+│   │       ├── self-healing-cache.service.ts
+│   │       ├── constants.ts
+│   │       └── README.md
+│   ├── nestjs-app/               # Demo NestJS application
 │   │   ├── main.ts               # Application bootstrap
-│   │   ├── self-healing-cache.module.ts
-│   │   ├── self-healing-cache.service.ts
-│   │   ├── experiments/          # Experiment runner
-│   │   ├── users/                # Example API
-│   │   └── cache/                # Cache management API
-│   ├── types/
-│   │   └── index.ts              # TypeScript definitions
+│   │   ├── app.module.ts
+│   │   ├── users/                # Example user API with DB
+│   │   ├── cache/                # Cache management API
+│   │   └── database/             # Database module
 │   └── __tests__/                # Unit tests (21 tests)
 ├── charts/                        # Generated charts
 ├── experiment_results/            # Experiment data (JSON)
@@ -374,13 +379,10 @@ npm test
 - SelfHealingCache (12 tests)
 - FailurePredictor (9 tests)
 
-### Run Benchmarks
-
-```bash
-npm run benchmark
-```
-
-Compares traditional cache vs self-healing cache performance.
+**Current Coverage:** 42.64% overall
+- Core: 48.33%
+- ML: 60.82%
+- Types: 100%
 
 ---
 
@@ -471,10 +473,10 @@ ENABLE_MYSQL=true
 
 ## 📚 Documentation
 
-- **README.md** (this file) - Overview and quick start
-- **EXPERIMENTS.md** - Detailed experiment descriptions
-- **NESTJS_GUIDE.md** - Detailed NestJS integration guide
-- **EXPERIMENT_GUIDE.md** - How to run and analyze experiments
+- **README.md** (this file) - Project overview, quick start, and module installation
+- **ARCHITECTURE.md** - Detailed architecture and component documentation
+- **EXPERIMENTS.md** - Experimental methodology, scenarios, and results
+- **src/libs/self-healing-cache/README.md** - Module usage and API reference
 
 ---
 

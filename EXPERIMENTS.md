@@ -4,6 +4,52 @@ This document describes the experimental setup, scenarios, metrics, and results 
 
 ---
 
+## 🚀 How to Run Experiments
+
+### Quick Start (Automated)
+
+Run the complete experiment suite with one command:
+
+```bash
+npm run experiment
+```
+
+This will:
+1. Start Docker containers (Redis + MySQL)
+2. Build the application
+3. Start NestJS server
+4. Run all 3 cache strategies across multiple scenarios
+5. Generate charts and save results
+
+### Manual Execution
+
+#### Via API Endpoint
+
+1. Start the application:
+```bash
+npm run start:dev
+```
+
+2. Trigger experiment via API:
+```bash
+curl -X POST http://localhost:3000/api/experiments/run-comparison
+```
+
+#### Via Script
+
+```bash
+./run_experiment.sh
+```
+
+### Results Location
+
+- **JSON Results**: `experiment_results/experiment_<timestamp>.json`
+- **Charts**: `charts/*.png`
+- **Cache Statistics**: `experiment_results/cache_statistics.json`
+- **ML Training Data**: `experiment_results/ml_training_data.json`
+
+---
+
 ## 🎯 Experiment Goals
 
 The primary goal is to demonstrate that:
